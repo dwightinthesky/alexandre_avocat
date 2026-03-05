@@ -164,36 +164,10 @@ function setupScrambleText() {
   const nodes = document.querySelectorAll("[data-scramble]");
   if (!nodes.length) return;
 
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
   nodes.forEach((node) => {
     const finalText = node.getAttribute("data-scramble");
     if (!finalText) return;
-
-    let frame = 0;
-    const total = finalText.length * 2;
-
-    const tick = () => {
-      let out = "";
-      for (let i = 0; i < finalText.length; i += 1) {
-        if (i < frame / 2) {
-          out += finalText[i];
-        } else if (finalText[i] === " ") {
-          out += " ";
-        } else {
-          out += letters[Math.floor(Math.random() * letters.length)];
-        }
-      }
-      node.textContent = out;
-      frame += 1;
-      if (frame <= total) {
-        window.requestAnimationFrame(tick);
-      } else {
-        node.textContent = finalText;
-      }
-    };
-
-    tick();
+    node.textContent = finalText;
   });
 }
 
@@ -335,7 +309,7 @@ function setupParallax() {
     const y = window.scrollY;
     nodes.forEach((node) => {
       const factor = Number(node.getAttribute("data-parallax") ?? "0");
-      const offset = y * factor;
+      const offset = y * factor * 0.35;
       node.style.transform = `translateY(${offset}px)`;
     });
   };
