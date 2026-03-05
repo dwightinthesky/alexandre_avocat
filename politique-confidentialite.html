@@ -8,88 +8,99 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="assets/styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#content">Aller au contenu</a>
+    <div class="site-noise" aria-hidden="true"></div>
+    <div class="pointer-glow" id="pointer-glow" aria-hidden="true"></div>
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
     <header class="site-header">
       <div class="container nav-wrap">
-        <a class="brand" href="index.html">
+        <a class="brand" href="index.html" aria-label="Alexandre Avocat - Accueil">
           <span class="brand-mark">A</span>
           <span>
-            <strong>Alexandre Avocat</strong>
-            <small>Barreau de Paris</small>
+            <strong class="brand-title">Alexandre Avocat</strong>
+            <small class="brand-sub">Barreau de Paris</small>
           </span>
         </a>
-        <button class="menu-toggle" data-menu-toggle aria-expanded="false" aria-controls="nav-panel">
-          Menu
-        </button>
+
+        <button class="menu-toggle" data-menu-toggle aria-expanded="false" aria-controls="nav-panel">Menu</button>
+
         <div class="nav-panel" id="nav-panel">
-          <nav class="nav-links">
+          <nav class="nav-links" aria-label="Navigation principale">
             <a href="index.html">Accueil</a>
             <a href="domaines.html">Domaines d'intervention</a>
             <a href="honoraires.html">Honoraires</a>
+            <a href="https://espace-client.exemple.fr" target="_blank" rel="noopener">Espace Client</a>
           </nav>
-          <div class="nav-cta">
-            <a class="btn btn-outline" href="https://espace-client.exemple.fr" target="_blank" rel="noopener"
-              >Espace Client</a
-            >
-            <a class="btn btn-primary" href="rendez-vous.html">Prendre Rendez-vous</a>
+          <div class="nav-actions">
+            <a class="btn btn-primary magnetic" href="rendez-vous.html">Prendre Rendez-vous</a>
           </div>
         </div>
       </div>
     </header>
 
-    <main class="container">
-      <section class="hero" data-animate>
-        <h1>Politique de confidentialite</h1>
-        <p class="lead">
-          Cette page decrit comment les donnees personnelles sont traitees dans le cadre des demandes transmises via
-          le site.
-        </p>
+    <main id="content" class="container page-main">
+      <section class="hero page-intro" data-animate>
+        <div class="hero-copy">
+          <span class="eyebrow">RGPD</span>
+          <h1>Politique de confidentialite</h1>
+          <p class="lead">
+            Cette politique encadre l'utilisation des donnees personnelles collectees via le formulaire de contact du
+            site.
+          </p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit"></div>
+          <span class="badge">Protection des donnees</span>
+        </div>
       </section>
 
-      <section class="card" data-animate>
-        <h2>Finalite du traitement</h2>
-        <p>
-          Les informations communiquees via le formulaire de contact sont utilisees uniquement pour traiter votre
-          demande et vous recontacter au sujet de cette demande.
-        </p>
+      <section class="section grid grid-2" data-animate>
+        <article class="card">
+          <h2>Finalite</h2>
+          <p>
+            Les donnees transmises sont utilisees uniquement pour traiter la demande envoyee via le formulaire de
+            contact et assurer le suivi de cette demande.
+          </p>
+        </article>
+        <article class="card">
+          <h2>Base juridique</h2>
+          <p>
+            Le traitement est fonde sur l'interet legitime du cabinet a organiser la relation precontractuelle et a
+            repondre aux sollicitations entrantes.
+          </p>
+        </article>
+        <article class="card">
+          <h2>Duree de conservation</h2>
+          <p>Les donnees collectees via le formulaire sont conservees pendant 6 mois apres traitement.</p>
+        </article>
+        <article class="card">
+          <h2>Cookies</h2>
+          <p>
+            Les cookies optionnels sont actives uniquement apres consentement explicite (opt-in). Aucun cookie
+            optionnel n'est depose par defaut.
+          </p>
+        </article>
       </section>
 
-      <section class="card" data-animate>
-        <h2>Base juridique</h2>
-        <p>
-          Le traitement repose sur l'interet legitime du cabinet a repondre aux sollicitations entrantes et a
-          organiser la relation precontractuelle.
-        </p>
-      </section>
-
-      <section class="card" data-animate>
-        <h2>Duree de conservation</h2>
-        <p>Les donnees issues du formulaire de contact sont conservees pendant 6 mois apres traitement de la demande.</p>
-      </section>
-
-      <section class="card" data-animate>
-        <h2>Cookies</h2>
-        <p>
-          Les cookies optionnels ne sont actives qu'apres un consentement explicite (opt-in). Aucun cookie optionnel
-          n'est depose par defaut.
-        </p>
-      </section>
-
-      <section class="card" data-animate>
-        <h2>Vos droits</h2>
-        <p>
-          Vous pouvez demander l'acces, la rectification, l'effacement ou la limitation des donnees vous concernant
-          via l'adresse de contact indiquee dans les mentions legales.
-        </p>
+      <section class="section" data-animate>
+        <article class="card">
+          <h2>Droits des personnes</h2>
+          <p>
+            Vous pouvez demander l'acces, la rectification, l'effacement ou la limitation du traitement de vos donnees
+            via les coordonnees indiquees dans les mentions legales.
+          </p>
+        </article>
       </section>
     </main>
 
-    <footer>
+    <footer class="footer">
       <div class="container footer-wrap">
         <span>&copy; 2026 Alexandre Avocat - Paris</span>
         <div class="footer-links">
@@ -101,12 +112,12 @@
 
     <div class="cookie-banner" id="cookie-banner" hidden>
       <p>
-        Ce site utilise uniquement des cookies optionnels apres votre choix explicite. Aucun cookie non necessaire
-        n'est depose avant consentement.
+        Ce site depose des cookies optionnels uniquement apres votre accord explicite (opt-in). Aucun cookie non
+        essentiel n'est actif par defaut.
       </p>
       <div class="cookie-actions">
-        <button class="btn btn-primary" type="button" data-cookie-choice="accept">Accepter</button>
-        <button class="btn btn-outline" type="button" data-cookie-choice="reject">Refuser</button>
+        <button class="btn btn-primary magnetic" type="button" data-cookie-choice="accept">Accepter</button>
+        <button class="btn btn-ghost magnetic" type="button" data-cookie-choice="reject">Refuser</button>
         <a class="cookie-link" href="politique-confidentialite.html">En savoir plus</a>
       </div>
     </div>
