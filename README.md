@@ -26,3 +26,12 @@ Open: `http://127.0.0.1:4173/index.html`
   - SIRET
   - hosting provider details
 - Replace `Espace Client` and calendaring placeholder URLs.
+
+## Deploy to Vercel
+
+This repository is static and can be deployed directly on Vercel without a build command.
+
+Recommended Vercel project settings:
+- Framework Preset: `Other`
+- Build Command: empty
+- Output Directory: empty
