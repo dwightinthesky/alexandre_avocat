@@ -1,28 +1,28 @@
-# starter-ts-api
+# Alexandre Avocat - Site Vitrine
 
-Minimal Node.js + TypeScript API starter project.
+Static, fast-loading website for a Paris law office.
 
-## Requirements
+## Pages
 
-- Node.js 20+
+- `index.html` (Accueil)
+- `domaines.html` (Domaines d'intervention)
+- `honoraires.html` (Honoraires)
+- `rendez-vous.html` (Prendre Rendez-vous)
+- `mentions-legales.html` (Mentions légales + médiateur)
+- `politique-confidentialite.html` (RGPD)
 
-## Quick start
+## Local preview
 
 ```bash
-cd starter-ts-api
-npm install
-npm run dev
+python3 -m http.server 4173
 ```
 
-Server URL: `http://localhost:3000`
+Open: `http://127.0.0.1:4173/index.html`
 
-## Scripts
+## Notes before production
 
-- `npm run dev`: run server in watch mode
-- `npm run build`: compile TypeScript to `dist/`
-- `npm run start`: run compiled app from `dist/`
-
-## Endpoints
-
-- `GET /`
-- `GET /health`
+- Replace legal placeholders in `mentions-legales.html`:
+  - full legal name
+  - SIRET
+  - hosting provider details
+- Replace `Espace Client` and calendaring placeholder URLs.

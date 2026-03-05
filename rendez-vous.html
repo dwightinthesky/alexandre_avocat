@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Prendre un rendez-vous en cabinet a Paris." />
+    <title>Prendre Rendez-vous | Alexandre Avocat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">A</span>
+          <span>
+            <strong>Alexandre Avocat</strong>
+            <small>Barreau de Paris</small>
+          </span>
+        </a>
+        <button class="menu-toggle" data-menu-toggle aria-expanded="false" aria-controls="nav-panel">
+          Menu
+        </button>
+        <div class="nav-panel" id="nav-panel">
+          <nav class="nav-links">
+            <a href="index.html">Accueil</a>
+            <a href="domaines.html">Domaines d'intervention</a>
+            <a href="honoraires.html">Honoraires</a>
+          </nav>
+          <div class="nav-cta">
+            <a class="btn btn-outline" href="https://espace-client.exemple.fr" target="_blank" rel="noopener"
+              >Espace Client</a
+            >
+            <a class="btn btn-primary" href="rendez-vous.html" aria-current="page">Prendre Rendez-vous</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero" data-animate>
+        <h1>Prendre un rendez-vous en cabinet</h1>
+        <p class="lead">
+          La prise de rendez-vous concerne uniquement des rencontres en presentiel au cabinet. Aucun paiement en ligne
+          n'est demande a cette etape.
+        </p>
+      </section>
+
+      <section class="grid grid-2" data-animate>
+        <article class="card">
+          <h2>Informations pratiques</h2>
+          <ul>
+            <li>Format: rendez-vous en cabinet uniquement</li>
+            <li>Duree: selon le creneau selectionne</li>
+            <li>Preparation: apportez les documents utiles a votre situation</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h2>Espace Client</h2>
+          <p>Si vous etes deja client, vous pouvez echanger des documents via la plateforme securisee dediee.</p>
+          <a class="btn btn-outline" href="https://espace-client.exemple.fr" target="_blank" rel="noopener"
+            >Ouvrir l'Espace Client</a
+          >
+        </article>
+      </section>
+
+      <section data-animate>
+        <h2>Module de reservation</h2>
+        <p>
+          Exemple d'integration iframe (Calendly / solution metier). Remplacez l'URL ci-dessous par votre lien
+          definitif.
+        </p>
+        <div class="iframe-wrap">
+          <iframe
+            title="Prise de rendez-vous en cabinet"
+            src="https://calendly.com/votre-cabinet/rendez-vous-cabinet?hide_event_type_details=1&hide_gdpr_banner=1"
+          ></iframe>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container footer-wrap">
+        <span>&copy; 2026 Alexandre Avocat - Paris</span>
+        <div class="footer-links">
+          <a href="mentions-legales.html">Mentions legales</a>
+          <a href="politique-confidentialite.html">Politique de confidentialite</a>
+        </div>
+      </div>
+    </footer>
+
+    <div class="cookie-banner" id="cookie-banner" hidden>
+      <p>
+        Ce site utilise uniquement des cookies optionnels apres votre choix explicite. Aucun cookie non necessaire
+        n'est depose avant consentement.
+      </p>
+      <div class="cookie-actions">
+        <button class="btn btn-primary" type="button" data-cookie-choice="accept">Accepter</button>
+        <button class="btn btn-outline" type="button" data-cookie-choice="reject">Refuser</button>
+        <a class="cookie-link" href="politique-confidentialite.html">En savoir plus</a>
+      </div>
+    </div>
+
+    <script src="assets/script.js"></script>
+  </body>
+</html>
