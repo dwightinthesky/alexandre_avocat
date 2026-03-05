@@ -197,6 +197,153 @@ function setupScrambleText() {
   });
 }
 
+function setupMetricCounters() {
+  const counters = document.querySelectorAll("[data-count]");
+  if (!counters.length) return;
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const observed = new WeakSet();
+
+  const animate = (node) => {
+    if (observed.has(node)) return;
+    observed.add(node);
+
+    const target = Number(node.getAttribute("data-count"));
+    if (!Number.isFinite(target)) return;
+
+    const suffix = node.getAttribute("data-suffix") ?? "";
+    const duration = reduced ? 0 : 900;
+    const startedAt = performance.now();
+
+    const tick = (now) => {
+      const elapsed = now - startedAt;
+      const progress = duration === 0 ? 1 : Math.min(1, elapsed / duration);
+      const eased = 1 - (1 - progress) ** 3;
+      const value = Math.round(target * eased);
+      node.textContent = `${value}${suffix}`;
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      }
+    };
+
+    requestAnimationFrame(tick);
+  };
+
+  if (!("IntersectionObserver" in window) || reduced) {
+    counters.forEach(animate);
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animate(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.45 }
+  );
+
+  counters.forEach((counter) => observer.observe(counter));
+}
+
+function setupValueSwitcher() {
+  const root = document.querySelector("[data-switcher]");
+  if (!root) return;
+
+  const buttons = root.querySelectorAll("[data-switch-button]");
+  const panels = root.querySelectorAll("[data-switch-panel]");
+
+  const select = (targetId) => {
+    buttons.forEach((button) => {
+      const active = button.getAttribute("data-target") === targetId;
+      button.setAttribute("aria-selected", String(active));
+      button.classList.toggle("is-active", active);
+      button.tabIndex = active ? 0 : -1;
+    });
+
+    panels.forEach((panel) => {
+      const active = panel.id === targetId;
+      panel.classList.toggle("panel-hidden", !active);
+    });
+  };
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetId = button.getAttribute("data-target");
+      if (targetId) select(targetId);
+    });
+  });
+}
+
+function setupQuickRail() {
+  const links = document.querySelectorAll("[data-quick-link]");
+  if (!links.length) return;
+
+  const activate = (id) => {
+    links.forEach((link) => {
+      const active = link.getAttribute("href") === `#${id}`;
+      link.classList.toggle("is-active", active);
+      link.setAttribute("aria-current", active ? "true" : "false");
+    });
+  };
+
+  links.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const href = link.getAttribute("href");
+      if (!href || !href.startsWith("#")) return;
+      const target = document.querySelector(href);
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  if (!("IntersectionObserver" in window)) return;
+
+  const sections = Array.from(links)
+    .map((link) => {
+      const href = link.getAttribute("href");
+      return href ? document.querySelector(href) : null;
+    })
+    .filter(Boolean);
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible?.target?.id) {
+        activate(visible.target.id);
+      }
+    },
+    { threshold: [0.2, 0.45, 0.7], rootMargin: "-10% 0px -40% 0px" }
+  );
+
+  sections.forEach((section) => observer.observe(section));
+}
+
+function setupParallax() {
+  const nodes = document.querySelectorAll("[data-parallax]");
+  if (!nodes.length) return;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced) return;
+
+  const update = () => {
+    const y = window.scrollY;
+    nodes.forEach((node) => {
+      const factor = Number(node.getAttribute("data-parallax") ?? "0");
+      const offset = y * factor;
+      node.style.transform = `translateY(${offset}px)`;
+    });
+  };
+
+  update();
+  window.addEventListener("scroll", update, { passive: true });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   setupCookieBanner();
   setupMobileMenu();
@@ -207,4 +354,8 @@ window.addEventListener("DOMContentLoaded", () => {
   setupTiltCards();
   setupAccordion();
   setupScrambleText();
+  setupMetricCounters();
+  setupValueSwitcher();
+  setupQuickRail();
+  setupParallax();
 });

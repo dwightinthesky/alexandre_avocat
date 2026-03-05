@@ -48,8 +48,15 @@
       </div>
     </header>
 
+    <aside class="quick-rail" aria-label="Navigation rapide">
+      <a class="quick-link is-active" href="#domaines" data-quick-link aria-current="true">Domaines</a>
+      <a class="quick-link" href="#experience" data-quick-link aria-current="false">Experience</a>
+      <a class="quick-link" href="#parcours" data-quick-link aria-current="false">Parcours</a>
+      <a class="quick-link" href="#faq" data-quick-link aria-current="false">FAQ</a>
+    </aside>
+
     <main id="content" class="container page-main">
-      <section class="hero page-intro" data-animate>
+      <section class="hero page-intro" data-animate id="hero">
         <div class="hero-copy">
           <span class="eyebrow">Cabinet independant - Paris</span>
           <h1><span data-scramble="Une defense elegante, solide et precise.">Une defense elegante, solide et precise.</span></h1>
@@ -68,27 +75,41 @@
           </div>
         </div>
         <div class="hero-art" aria-hidden="true">
-          <div class="orbit"></div>
-          <span class="badge">Design system legal minimal</span>
+          <div class="kinetic-canvas" data-parallax="0.03">
+            <svg class="kinetic-svg" viewBox="0 0 360 320" role="presentation">
+              <path class="kinetic-line line-a" d="M32 256 C86 204, 92 92, 176 84 C260 76, 286 184, 328 152" />
+              <path class="kinetic-line line-b" d="M24 78 C92 126, 150 168, 248 118 C280 102, 312 88, 336 104" />
+              <path class="kinetic-line line-c" d="M52 282 C132 248, 202 264, 304 214" />
+              <circle class="kinetic-node node-a" cx="176" cy="84" r="8"></circle>
+              <circle class="kinetic-node node-b" cx="248" cy="118" r="7"></circle>
+              <circle class="kinetic-node node-c" cx="304" cy="214" r="6"></circle>
+            </svg>
+          </div>
+          <span class="badge">Direction artistique proprietaire</span>
+          <p class="hero-note">Compositions animees en SVG natif, sans dependance externe.</p>
         </div>
       </section>
 
-      <section class="insight-strip" data-animate>
-        <article class="insight">
-          <strong>2</strong>
-          <span>Domaines d'intervention cibles</span>
+      <section class="metric-wall" data-animate>
+        <article class="metric-card">
+          <strong class="metric-value" data-count="2">2</strong>
+          <span class="metric-label">Domaines d'intervention cibles</span>
         </article>
-        <article class="insight">
-          <strong>100%</strong>
-          <span>Rendez-vous en cabinet uniquement</span>
+        <article class="metric-card">
+          <strong class="metric-value" data-count="100" data-suffix="%">100%</strong>
+          <span class="metric-label">Rendez-vous en cabinet uniquement</span>
         </article>
-        <article class="insight">
-          <strong>6 mois</strong>
-          <span>Conservation des demandes via formulaire</span>
+        <article class="metric-card">
+          <strong class="metric-value" data-count="6" data-suffix=" mois">6 mois</strong>
+          <span class="metric-label">Conservation des demandes via formulaire</span>
+        </article>
+        <article class="metric-card">
+          <strong class="metric-value" data-count="1">1</strong>
+          <span class="metric-label">Point de contact unique</span>
         </article>
       </section>
 
-      <section class="section" data-animate>
+      <section class="section" data-animate id="domaines">
         <div class="section-head">
           <div>
             <span class="eyebrow">Activites dominantes</span>
@@ -114,7 +135,68 @@
         </div>
       </section>
 
-      <section class="section split" data-animate>
+      <section class="section" data-animate id="experience">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Experience personnalisee</span>
+            <h2>Un discours ajuste a votre contexte</h2>
+          </div>
+        </div>
+        <div class="value-switcher" data-switcher>
+          <div class="switch-controls" role="tablist" aria-label="Type de client">
+            <button
+              class="switch-btn is-active"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              tabindex="0"
+              data-switch-button
+              data-target="panel-particulier"
+            >
+              Particuliers
+            </button>
+            <button
+              class="switch-btn"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              tabindex="-1"
+              data-switch-button
+              data-target="panel-entreprise"
+            >
+              Entreprises
+            </button>
+          </div>
+          <div class="switch-panels">
+            <article class="switch-panel" id="panel-particulier" data-switch-panel>
+              <h3>Pour les particuliers</h3>
+              <p>
+                Vous beneficiez d'un accompagnement pedagogique sur les enjeux familiaux, patrimoniaux et
+                professionnels, avec une trajectoire claire pour reduire l'incertitude.
+              </p>
+              <ul>
+                <li>Points d'etape reguliers et comprehensibles</li>
+                <li>Priorisation immediate des actions a engager</li>
+                <li>Documentation utile pour prendre une decision rapide</li>
+              </ul>
+            </article>
+            <article class="switch-panel panel-hidden" id="panel-entreprise" data-switch-panel>
+              <h3>Pour les entreprises</h3>
+              <p>
+                Le cabinet structure les situations sociales sensibles avec une execution rigoureuse, compatible avec
+                les contraintes de direction et de gouvernance.
+              </p>
+              <ul>
+                <li>Lecture des risques juridiques et operationnels</li>
+                <li>Argumentaires ecrits exploitables par vos equipes</li>
+                <li>Cadence de pilotage adaptee aux cycles business</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section split" data-animate id="parcours">
         <article class="card tilt-card">
           <span class="eyebrow">Honoraires</span>
           <h2>Cadre transparent</h2>
@@ -176,7 +258,7 @@
         </div>
       </section>
 
-      <section class="section" data-animate>
+      <section class="section" data-animate id="faq">
         <div class="section-head">
           <div>
             <span class="eyebrow">FAQ</span>
