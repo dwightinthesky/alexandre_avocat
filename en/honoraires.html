@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Fees: time-based billing, hourly rate and payment after service." />
+    <title>Fees | Alexandre Avocat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="site-noise" aria-hidden="true"></div>
+    <div class="pointer-glow" id="pointer-glow" aria-hidden="true"></div>
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html" aria-label="Alexandre Avocat - Home">
+          <span class="brand-mark">A</span>
+          <span>
+            <strong class="brand-title">Alexandre Avocat</strong>
+            <small class="brand-sub">Paris Bar</small>
+          </span>
+        </a>
+
+        <button class="menu-toggle" data-menu-toggle aria-expanded="false" aria-controls="nav-panel">Menu</button>
+
+        <div class="nav-panel" id="nav-panel">
+          <nav class="nav-links" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="domaines.html">Practice Areas</a>
+            <a href="honoraires.html" aria-current="page">Fees</a>
+            <a href="https://espace-client.exemple.fr" target="_blank" rel="noopener">Client Portal</a>
+          </nav>
+          <div class="nav-actions">
+            <a class="btn btn-primary magnetic" href="rendez-vous.html">Book Appointment</a>
+            <div class="lang-switch" aria-label="Language selector">
+              <a class="lang-link" href="../honoraires.html" lang="fr" hreflang="fr">FR</a>
+              <span class="lang-link is-active" aria-current="true">EN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="content" class="container page-main">
+      <section class="hero page-intro" data-animate>
+        <div class="hero-copy">
+          <span class="eyebrow">Fees</span>
+          <h1>A clear and contractual billing model.</h1>
+          <p class="lead">
+            The office applies time-based billing (hourly rate), with payment after service under the engagement terms.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary magnetic" href="rendez-vous.html">Discuss your matter</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="kinetic-canvas" data-parallax="0.015">
+            <svg class="kinetic-svg" viewBox="0 0 360 320" role="presentation">
+              <path class="kinetic-line line-a" d="M32 256 C86 204, 92 92, 176 84 C260 76, 286 184, 328 152" />
+              <path class="kinetic-line line-b" d="M24 78 C92 126, 150 168, 248 118 C280 102, 312 88, 336 104" />
+              <path class="kinetic-line line-c" d="M52 282 C132 248, 202 264, 304 214" />
+              <circle class="kinetic-node node-a" cx="176" cy="84" r="8"></circle>
+              <circle class="kinetic-node node-b" cx="248" cy="118" r="7"></circle>
+              <circle class="kinetic-node node-c" cx="304" cy="214" r="6"></circle>
+            </svg>
+          </div>
+          <span class="badge">Contractual transparency</span>
+        </div>
+      </section>
+
+      <section class="section grid grid-2" data-animate>
+        <article class="card tilt-card">
+          <h2>Billing method</h2>
+          <div class="highlight-box">Services are billed on time spent (hourly rate), with explicit work tracking.</div>
+          <ul>
+            <li>Fee agreement defined at mission start</li>
+            <li>Clear scope and objectives</li>
+            <li>Visibility on legal work performed</li>
+          </ul>
+        </article>
+        <article class="card tilt-card">
+          <h2>Payment</h2>
+          <div class="highlight-box">Payment is made after service, under the agreed billing terms.</div>
+          <ul>
+            <li>No mandatory online payment at booking stage</li>
+            <li>Settlement according to invoice terms</li>
+            <li>Secure exchange through your Client Portal</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="section split" data-animate>
+        <article class="card">
+          <span class="eyebrow">Steering</span>
+          <h2>What you can expect</h2>
+          <p>
+            You get clear visibility on engagement level, legal options and next milestones.
+          </p>
+          <p>
+            The objective is to maintain high legal quality with full clarity on work allocation.
+          </p>
+        </article>
+        <article class="card">
+          <span class="eyebrow">Appointment</span>
+          <h2>In-office assessment</h2>
+          <p>
+            An in-office meeting allows precise issue qualification and a realistic legal strategy definition.
+          </p>
+          <a class="btn btn-ghost magnetic" href="rendez-vous.html">Book an in-office meeting</a>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-wrap">
+        <span>&copy; 2026 Alexandre Avocat - Paris</span>
+        <div class="footer-links">
+          <a href="mentions-legales.html">Legal Notice</a>
+          <a href="politique-confidentialite.html">Privacy Policy</a>
+        </div>
+      </div>
+    </footer>
+
+    <div class="cookie-banner" id="cookie-banner" hidden>
+      <p>
+        This site only sets optional cookies after explicit opt-in consent. No non-essential cookie is enabled by
+        default.
+      </p>
+      <div class="cookie-actions">
+        <button class="btn btn-primary magnetic" type="button" data-cookie-choice="accept">Accept</button>
+        <button class="btn btn-ghost magnetic" type="button" data-cookie-choice="reject">Reject</button>
+        <a class="cookie-link" href="politique-confidentialite.html">Learn more</a>
+      </div>
+    </div>
+
+    <script src="../assets/script.js"></script>
+  </body>
+</html>
