@@ -97,14 +97,56 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">Booking module</span>
-            <h2>Embed your tool (Calendly / legal platform)</h2>
+            <h2>Book directly on the website</h2>
           </div>
         </div>
-        <div class="iframe-wrap">
-          <iframe
-            title="In-office appointment booking"
-            src="https://calendly.com/votre-cabinet/rendez-vous-cabinet?hide_event_type_details=1&hide_gdpr_banner=1"
-          ></iframe>
+        <div class="booking-shell" data-booking-widget data-lang="en">
+          <article class="card">
+            <h3>Choose your slot</h3>
+            <form class="booking-form" novalidate>
+              <label for="appointment_name_en">Full name</label>
+              <input id="appointment_name_en" name="appointment_name" type="text" required />
+
+              <label for="appointment_email_en">Email</label>
+              <input id="appointment_email_en" name="appointment_email" type="email" required />
+
+              <label for="appointment_date_en">Date</label>
+              <input id="appointment_date_en" name="appointment_date" type="date" required />
+
+              <label for="appointment_time_en">Time</label>
+              <select id="appointment_time_en" name="appointment_time" required>
+                <option value="">Select a time</option>
+                <option value="09:00">09:00</option>
+                <option value="10:00">10:00</option>
+                <option value="11:00">11:00</option>
+                <option value="14:00">14:00</option>
+                <option value="15:00">15:00</option>
+                <option value="16:00">16:00</option>
+              </select>
+
+              <label for="appointment_message_en">Message (optional)</label>
+              <textarea id="appointment_message_en" name="appointment_message"></textarea>
+
+              <button class="btn btn-primary magnetic" type="submit">Confirm booking</button>
+              <p class="note">Standard appointment duration: 60 minutes in office.</p>
+            </form>
+          </article>
+
+          <article class="card booking-result is-hidden" data-booking-result>
+            <h3>Booking confirmed</h3>
+            <p class="booking-summary" data-booking-summary></p>
+            <p class="note">Add this event to your personal calendar:</p>
+            <div class="booking-actions">
+              <a class="btn btn-primary magnetic" data-link-google target="_blank" rel="noopener"
+                >Add to Google Calendar</a
+              >
+              <a class="btn btn-ghost magnetic" data-link-outlook target="_blank" rel="noopener"
+                >Add to Outlook Calendar</a
+              >
+              <a class="btn btn-ghost magnetic" data-link-apple>Add to Apple Calendar (.ics)</a>
+            </div>
+            <a class="cookie-link" data-link-ics>Download .ics file</a>
+          </article>
         </div>
       </section>
     </main>

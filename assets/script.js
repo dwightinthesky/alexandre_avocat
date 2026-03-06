@@ -318,6 +318,168 @@ function setupParallax() {
   window.addEventListener("scroll", update, { passive: true });
 }
 
+function padNumber(value) {
+  return String(value).padStart(2, "0");
+}
+
+function formatICSDateLocal(date) {
+  return `${date.getFullYear()}${padNumber(date.getMonth() + 1)}${padNumber(date.getDate())}T${padNumber(
+    date.getHours()
+  )}${padNumber(date.getMinutes())}00`;
+}
+
+function formatGoogleUTC(date) {
+  return date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+}
+
+function escapeICS(text) {
+  return text.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+}
+
+function buildICSFile({ uid, start, end, title, description, location }) {
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Alexandre Avocat//Booking//EN",
+    "BEGIN:VEVENT",
+    `UID:${uid}`,
+    `DTSTAMP:${formatGoogleUTC(new Date())}`,
+    `DTSTART:${formatICSDateLocal(start)}`,
+    `DTEND:${formatICSDateLocal(end)}`,
+    `SUMMARY:${escapeICS(title)}`,
+    `DESCRIPTION:${escapeICS(description)}`,
+    `LOCATION:${escapeICS(location)}`,
+    "END:VEVENT",
+    "END:VCALENDAR"
+  ].join("\r\n");
+}
+
+function setupBookingWidgets() {
+  const widgets = document.querySelectorAll("[data-booking-widget]");
+  if (!widgets.length) return;
+
+  widgets.forEach((widget) => {
+    const form = widget.querySelector("form");
+    const dateInput = widget.querySelector("[name='appointment_date']");
+    const timeInput = widget.querySelector("[name='appointment_time']");
+    const nameInput = widget.querySelector("[name='appointment_name']");
+    const emailInput = widget.querySelector("[name='appointment_email']");
+    const messageInput = widget.querySelector("[name='appointment_message']");
+    const result = widget.querySelector("[data-booking-result]");
+    const summary = widget.querySelector("[data-booking-summary]");
+    const googleLink = widget.querySelector("[data-link-google]");
+    const outlookLink = widget.querySelector("[data-link-outlook]");
+    const appleLink = widget.querySelector("[data-link-apple]");
+    const icsLink = widget.querySelector("[data-link-ics]");
+    const lang = widget.getAttribute("data-lang") === "en" ? "en" : "fr";
+
+    if (
+      !form ||
+      !dateInput ||
+      !timeInput ||
+      !nameInput ||
+      !emailInput ||
+      !result ||
+      !summary ||
+      !googleLink ||
+      !outlookLink ||
+      !appleLink ||
+      !icsLink
+    ) {
+      return;
+    }
+
+    const today = new Date();
+    const minDate = `${today.getFullYear()}-${padNumber(today.getMonth() + 1)}-${padNumber(today.getDate())}`;
+    dateInput.setAttribute("min", minDate);
+
+    let icsUrl = "";
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const dateValue = dateInput.value;
+      const timeValue = timeInput.value;
+      const nameValue = nameInput.value.trim();
+      const emailValue = emailInput.value.trim();
+      const messageValue = messageInput ? messageInput.value.trim() : "";
+
+      if (!dateValue || !timeValue || !nameValue || !emailValue) return;
+
+      const start = new Date(`${dateValue}T${timeValue}:00`);
+      if (Number.isNaN(start.getTime())) return;
+      const end = new Date(start.getTime() + 60 * 60 * 1000);
+
+      const location = "Cabinet Alexandre Avocat, Paris";
+      const title = lang === "fr" ? "Rendez-vous en cabinet - Alexandre Avocat" : "In-office meeting - Alexandre Avocat";
+      const details = [
+        lang === "fr" ? "Reservation effectuee via le site." : "Booking submitted from website.",
+        `${lang === "fr" ? "Nom" : "Name"}: ${nameValue}`,
+        `Email: ${emailValue}`,
+        messageValue ? `${lang === "fr" ? "Message" : "Message"}: ${messageValue}` : ""
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      const uid = `${Date.now()}-${Math.random().toString(36).slice(2)}@alexandre-avocat`;
+      const icsData = buildICSFile({
+        uid,
+        start,
+        end,
+        title,
+        description: details,
+        location
+      });
+
+      if (icsUrl) URL.revokeObjectURL(icsUrl);
+      icsUrl = URL.createObjectURL(new Blob([icsData], { type: "text/calendar;charset=utf-8" }));
+
+      const googleUrl = new URL("https://calendar.google.com/calendar/render");
+      googleUrl.searchParams.set("action", "TEMPLATE");
+      googleUrl.searchParams.set("text", title);
+      googleUrl.searchParams.set("dates", `${formatGoogleUTC(start)}/${formatGoogleUTC(end)}`);
+      googleUrl.searchParams.set("details", details);
+      googleUrl.searchParams.set("location", location);
+
+      const outlookUrl = new URL("https://outlook.live.com/calendar/0/deeplink/compose");
+      outlookUrl.searchParams.set("path", "/calendar/action/compose");
+      outlookUrl.searchParams.set("rru", "addevent");
+      outlookUrl.searchParams.set("subject", title);
+      outlookUrl.searchParams.set("startdt", start.toISOString());
+      outlookUrl.searchParams.set("enddt", end.toISOString());
+      outlookUrl.searchParams.set("body", details);
+      outlookUrl.searchParams.set("location", location);
+
+      googleLink.href = googleUrl.toString();
+      outlookLink.href = outlookUrl.toString();
+      appleLink.href = icsUrl;
+      icsLink.href = icsUrl;
+
+      const fileName = lang === "fr" ? "rendez-vous.ics" : "appointment.ics";
+      appleLink.setAttribute("download", fileName);
+      icsLink.setAttribute("download", fileName);
+
+      const locale = lang === "fr" ? "fr-FR" : "en-GB";
+      const summaryText =
+        lang === "fr"
+          ? `Rendez-vous confirme le ${start.toLocaleDateString(locale)} a ${start.toLocaleTimeString(locale, {
+              hour: "2-digit",
+              minute: "2-digit"
+            })}.`
+          : `Appointment confirmed on ${start.toLocaleDateString(locale)} at ${start.toLocaleTimeString(locale, {
+              hour: "2-digit",
+              minute: "2-digit"
+            })}.`;
+      summary.textContent = summaryText;
+      result.classList.remove("is-hidden");
+    });
+
+    window.addEventListener("beforeunload", () => {
+      if (icsUrl) URL.revokeObjectURL(icsUrl);
+    });
+  });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   setupCookieBanner();
   setupMobileMenu();
@@ -332,4 +494,5 @@ window.addEventListener("DOMContentLoaded", () => {
   setupValueSwitcher();
   setupQuickRail();
   setupParallax();
+  setupBookingWidgets();
 });

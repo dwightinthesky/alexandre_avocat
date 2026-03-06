@@ -870,6 +870,36 @@ form {
   gap: 0.72rem;
 }
 
+.booking-shell {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 0.95rem;
+}
+
+.booking-form {
+  display: grid;
+  gap: 0.72rem;
+}
+
+.booking-result {
+  display: grid;
+  align-content: start;
+  gap: 0.8rem;
+}
+
+.booking-summary {
+  margin: 0;
+}
+
+.booking-actions {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
 label {
   font-size: 0.88rem;
   font-weight: 600;
@@ -1021,6 +1051,7 @@ textarea {
   .grid-2,
   .grid-3,
   .insight-strip,
+  .booking-shell,
   .metric-wall {
     grid-template-columns: 1fr;
   }
