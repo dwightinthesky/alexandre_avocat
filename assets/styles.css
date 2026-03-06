@@ -876,15 +876,118 @@ form {
   gap: 0.95rem;
 }
 
+.booking-card-main {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.booking-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.step-pill {
+  border: 1px solid rgba(184, 170, 139, 0.8);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ink-soft);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.27rem 0.56rem;
+}
+
+.step-pill.is-active {
+  border-color: rgba(31, 76, 70, 0.62);
+  color: var(--brand);
+  background: rgba(31, 76, 70, 0.12);
+}
+
 .booking-form {
   display: grid;
   gap: 0.72rem;
+}
+
+.booking-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.booking-slot {
+  border: 1px solid rgba(184, 170, 139, 0.84);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ink);
+  border-radius: var(--radius-xs);
+  padding: 0.56rem 0.45rem;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.booking-slot:hover {
+  border-color: rgba(31, 76, 70, 0.55);
+  transform: translateY(-1px);
+}
+
+.booking-slot.is-selected {
+  border-color: rgba(31, 76, 70, 0.68);
+  background: rgba(31, 76, 70, 0.13);
+  color: var(--brand);
+}
+
+.booking-preview {
+  border: 1px dashed rgba(184, 170, 139, 0.86);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.85rem;
+  background: rgba(255, 252, 243, 0.75);
+}
+
+.booking-preview h4 {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+}
+
+.booking-preview-line {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
 }
 
 .booking-result {
   display: grid;
   align-content: start;
   gap: 0.8rem;
+}
+
+.booking-success {
+  border-color: rgba(31, 76, 70, 0.5);
+  background:
+    radial-gradient(circle at top right, rgba(31, 76, 70, 0.08) 0, transparent 42%),
+    var(--surface);
+}
+
+.booking-success-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.booking-check {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--brand);
+  background: rgba(31, 76, 70, 0.16);
+  border: 1px solid rgba(31, 76, 70, 0.45);
 }
 
 .booking-summary {
@@ -894,6 +997,51 @@ form {
 .booking-actions {
   display: grid;
   gap: 0.55rem;
+}
+
+.booking-meta {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.89rem;
+  color: var(--ink-soft);
+}
+
+.booking-meta strong {
+  color: var(--ink);
+}
+
+.booking-calendar-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.calendar-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(184, 170, 139, 0.85);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--ink);
+  font-size: 0.88rem;
+  font-weight: 700;
+  min-height: 2.6rem;
+  padding: 0.4rem 0.8rem;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.calendar-card:hover {
+  border-color: rgba(31, 76, 70, 0.65);
+  background: rgba(31, 76, 70, 0.1);
+  transform: translateY(-1px);
+}
+
+.calendar-card:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .is-hidden {
@@ -1097,5 +1245,9 @@ textarea {
   .switch-btn {
     flex: 1;
     text-align: center;
+  }
+
+  .booking-slot-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

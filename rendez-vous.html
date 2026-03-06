@@ -94,7 +94,12 @@
           </div>
         </div>
         <div class="booking-shell" data-booking-widget data-lang="fr">
-          <article class="card">
+          <article class="card booking-card-main">
+            <div class="booking-stepper" aria-hidden="true">
+              <span class="step-pill is-active">1. Coordonnees</span>
+              <span class="step-pill is-active">2. Creneau</span>
+              <span class="step-pill">3. Agenda</span>
+            </div>
             <h3>Choisissez votre creneau</h3>
             <form class="booking-form" novalidate>
               <label for="appointment_name_fr">Nom complet</label>
@@ -107,15 +112,16 @@
               <input id="appointment_date_fr" name="appointment_date" type="date" required />
 
               <label for="appointment_time_fr">Horaire</label>
-              <select id="appointment_time_fr" name="appointment_time" required>
-                <option value="">Choisir un horaire</option>
-                <option value="09:00">09:00</option>
-                <option value="10:00">10:00</option>
-                <option value="11:00">11:00</option>
-                <option value="14:00">14:00</option>
-                <option value="15:00">15:00</option>
-                <option value="16:00">16:00</option>
-              </select>
+              <div class="booking-slot-grid" data-slot-grid>
+                <button class="booking-slot" type="button" data-slot-value="09:00">09:00</button>
+                <button class="booking-slot" type="button" data-slot-value="10:00">10:00</button>
+                <button class="booking-slot" type="button" data-slot-value="11:00">11:00</button>
+                <button class="booking-slot" type="button" data-slot-value="14:00">14:00</button>
+                <button class="booking-slot" type="button" data-slot-value="15:00">15:00</button>
+                <button class="booking-slot" type="button" data-slot-value="16:00">16:00</button>
+              </div>
+              <input id="appointment_time_fr" name="appointment_time" type="hidden" required />
+              <p class="note" data-selected-time>Aucun horaire selectionne.</p>
 
               <label for="appointment_message_fr">Message (optionnel)</label>
               <textarea id="appointment_message_fr" name="appointment_message"></textarea>
@@ -123,20 +129,36 @@
               <button class="btn btn-primary magnetic" type="submit">Confirmer la reservation</button>
               <p class="note">Duree standard du rendez-vous: 60 minutes en cabinet.</p>
             </form>
+
+            <div class="booking-preview">
+              <h4>Apercu du rendez-vous</h4>
+              <p class="booking-preview-line"><strong>Date:</strong> <span data-preview-date>A selectionner</span></p>
+              <p class="booking-preview-line"><strong>Horaire:</strong> <span data-preview-time>A selectionner</span></p>
+            </div>
           </article>
 
-          <article class="card booking-result is-hidden" data-booking-result>
-            <h3>Reservation confirmee</h3>
-            <p class="booking-summary" data-booking-summary></p>
+          <article class="card booking-result booking-success is-hidden" data-booking-result>
+            <div class="booking-success-head">
+              <span class="booking-check" aria-hidden="true">OK</span>
+              <div>
+                <h3>Reservation confirmee</h3>
+                <p class="booking-summary" data-booking-summary></p>
+              </div>
+            </div>
+            <ul class="booking-meta">
+              <li><strong>Nom:</strong> <span data-result-name>-</span></li>
+              <li><strong>Date:</strong> <span data-result-date>-</span></li>
+              <li><strong>Horaire:</strong> <span data-result-time>-</span></li>
+            </ul>
             <p class="note">Ajoutez votre rendez-vous a votre agenda personnel:</p>
-            <div class="booking-actions">
-              <a class="btn btn-primary magnetic" data-link-google target="_blank" rel="noopener"
+            <div class="booking-calendar-grid">
+              <a class="calendar-card" data-link-google target="_blank" rel="noopener"
                 >Ajouter a Google Calendar</a
               >
-              <a class="btn btn-ghost magnetic" data-link-outlook target="_blank" rel="noopener"
+              <a class="calendar-card" data-link-outlook target="_blank" rel="noopener"
                 >Ajouter a Outlook Calendar</a
               >
-              <a class="btn btn-ghost magnetic" data-link-apple>Ajouter a Apple Calendar (.ics)</a>
+              <a class="calendar-card" data-link-apple>Ajouter a Apple Calendar (.ics)</a>
             </div>
             <a class="cookie-link" data-link-ics>Telecharger le fichier .ics</a>
           </article>

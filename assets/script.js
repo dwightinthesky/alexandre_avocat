@@ -371,7 +371,15 @@ function setupBookingWidgets() {
     const outlookLink = widget.querySelector("[data-link-outlook]");
     const appleLink = widget.querySelector("[data-link-apple]");
     const icsLink = widget.querySelector("[data-link-ics]");
+    const selectedTimeLabel = widget.querySelector("[data-selected-time]");
+    const previewDate = widget.querySelector("[data-preview-date]");
+    const previewTime = widget.querySelector("[data-preview-time]");
+    const resultName = widget.querySelector("[data-result-name]");
+    const resultDate = widget.querySelector("[data-result-date]");
+    const resultTime = widget.querySelector("[data-result-time]");
+    const slotButtons = Array.from(widget.querySelectorAll("[data-slot-value]"));
     const lang = widget.getAttribute("data-lang") === "en" ? "en" : "fr";
+    const locale = lang === "fr" ? "fr-FR" : "en-GB";
 
     if (
       !form ||
@@ -394,6 +402,58 @@ function setupBookingWidgets() {
     dateInput.setAttribute("min", minDate);
 
     let icsUrl = "";
+    const emptyDateText = lang === "fr" ? "A selectionner" : "To be selected";
+    const emptyTimeText = lang === "fr" ? "A selectionner" : "To be selected";
+    const emptySlotText = lang === "fr" ? "Aucun horaire selectionne." : "No time selected yet.";
+
+    const updatePreview = () => {
+      if (previewDate) {
+        if (!dateInput.value) {
+          previewDate.textContent = emptyDateText;
+        } else {
+          const previewDateValue = new Date(`${dateInput.value}T00:00:00`);
+          previewDate.textContent = previewDateValue.toLocaleDateString(locale, {
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+          });
+        }
+      }
+
+      if (previewTime) {
+        previewTime.textContent = timeInput.value || emptyTimeText;
+      }
+    };
+
+    const setSlot = (value) => {
+      timeInput.value = value;
+      slotButtons.forEach((button) => {
+        button.classList.toggle("is-selected", button.getAttribute("data-slot-value") === value);
+      });
+      if (selectedTimeLabel) {
+        selectedTimeLabel.textContent =
+          lang === "fr" ? `Horaire selectionne: ${value}` : `Selected time: ${value}`;
+      }
+      updatePreview();
+    };
+
+    if (slotButtons.length) {
+      slotButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const value = button.getAttribute("data-slot-value");
+          if (!value) return;
+          setSlot(value);
+        });
+      });
+    }
+
+    dateInput.addEventListener("change", updatePreview);
+    dateInput.addEventListener("input", updatePreview);
+
+    if (selectedTimeLabel) {
+      selectedTimeLabel.textContent = emptySlotText;
+    }
+    updatePreview();
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -459,7 +519,6 @@ function setupBookingWidgets() {
       appleLink.setAttribute("download", fileName);
       icsLink.setAttribute("download", fileName);
 
-      const locale = lang === "fr" ? "fr-FR" : "en-GB";
       const summaryText =
         lang === "fr"
           ? `Rendez-vous confirme le ${start.toLocaleDateString(locale)} a ${start.toLocaleTimeString(locale, {
@@ -471,7 +530,22 @@ function setupBookingWidgets() {
               minute: "2-digit"
             })}.`;
       summary.textContent = summaryText;
+      if (resultName) resultName.textContent = nameValue;
+      if (resultDate) {
+        resultDate.textContent = start.toLocaleDateString(locale, {
+          day: "2-digit",
+          month: "long",
+          year: "numeric"
+        });
+      }
+      if (resultTime) {
+        resultTime.textContent = start.toLocaleTimeString(locale, {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+      }
       result.classList.remove("is-hidden");
+      result.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
 
     window.addEventListener("beforeunload", () => {
