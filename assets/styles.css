@@ -15,8 +15,8 @@
   --radius-md: 0.95rem;
   --radius-pill: 999px;
   --shadow-soft: 0 26px 52px -42px rgba(8, 12, 16, 0.36);
-  --font-sans: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
-  --font-display: "Newsreader", "Iowan Old Style", serif;
+  --font-sans: "Manrope", sans-serif;
+  --font-display: "Newsreader", serif;
 }
 
 @media (prefers-reduced-motion: reduce) {
