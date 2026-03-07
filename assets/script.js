@@ -246,36 +246,34 @@ function setupServiceCards() {
   const serviceMap = {
     fr: [
       {
+        icon: "TR",
+        meta: "Relation de travail",
+        title: "Droit du travail",
+        description:
+          "Gestion des phases critiques de la relation de travail, côté employeur comme côté salarié, avec exécution documentée."
+      },
+      {
         icon: "FP",
         meta: "Famille et patrimoine",
         title: "Droit de la famille et du patrimoine",
         description:
           "Accompagnement des situations familiales et patrimoniales sensibles avec une trajectoire juridique stable et compréhensible."
-      },
-      {
-        icon: "TR",
-        meta: "Relation de travail",
-        title: "Droit du travail",
-        focusLabel: "Priorité",
-        description:
-          "Gestion des phases critiques de la relation de travail, côté employeur comme côté salarié, avec exécution documentée."
       }
     ],
     en: [
+      {
+        icon: "LB",
+        meta: "Labor matters",
+        title: "Labor Law",
+        description:
+          "Support during critical labor phases for both employers and employees, with documented execution."
+      },
       {
         icon: "FP",
         meta: "Family and patrimony",
         title: "Family and Patrimonial Law",
         description:
           "Guidance for sensitive family and patrimonial situations with a stable and understandable legal path."
-      },
-      {
-        icon: "LB",
-        meta: "Labor matters",
-        title: "Labor Law",
-        focusLabel: "Primary focus",
-        description:
-          "Support during critical labor phases for both employers and employees, with documented execution."
       }
     ]
   };
@@ -286,12 +284,10 @@ function setupServiceCards() {
     grid.innerHTML = services
       .map(
         (service) => `
-          <article class="card tilt-card service-card${service.focusLabel ? " service-focus" : ""}">
+          <article class="card tilt-card service-card">
             <div class="service-head">
               <span class="service-icon" aria-hidden="true">${escapeHTML(service.icon)}</span>
-              <span class="service-meta">${escapeHTML(service.meta)}</span>${
-                service.focusLabel ? `<span class="service-focus-tag">${escapeHTML(service.focusLabel)}</span>` : ""
-              }
+              <span class="service-meta">${escapeHTML(service.meta)}</span>
             </div>
             <h3>${escapeHTML(service.title)}</h3>
             <p>${escapeHTML(service.description)}</p>
