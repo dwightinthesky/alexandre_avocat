@@ -678,7 +678,8 @@ select:focus-visible,
 .switch-btn:focus-visible,
 .booking-slot:focus-visible,
 .admin-date-btn:focus-visible,
-.admin-slot-btn:focus-visible {
+.admin-slot-btn:focus-visible,
+.admin-day-chip:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
@@ -1129,6 +1130,98 @@ textarea {
   gap: 0.8rem;
 }
 
+.admin-extensions {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.admin-inline-form {
+  margin-top: 0.7rem;
+  display: grid;
+  gap: 0.62rem;
+}
+
+.admin-rule-list {
+  margin-top: 0.72rem;
+  display: grid;
+  gap: 0.44rem;
+}
+
+.admin-rule-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.56rem;
+  border: 1px solid rgba(179, 198, 214, 0.72);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 0.52rem 0.62rem;
+}
+
+.admin-rule-item .note {
+  margin: 0;
+}
+
+.admin-rule-remove {
+  padding: 0.48rem 0.66rem;
+}
+
+.admin-rule-builder {
+  margin-top: 0.85rem;
+  display: grid;
+  gap: 0.68rem;
+}
+
+.admin-rule-days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.34rem;
+}
+
+.admin-day-chip {
+  border: 1px solid rgba(179, 198, 214, 0.82);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.38rem 0.6rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.admin-day-chip:hover {
+  border-color: rgba(0, 132, 189, 0.58);
+}
+
+.admin-day-chip.is-active {
+  border-color: rgba(0, 132, 189, 0.88);
+  background: var(--blithe);
+  color: #fff;
+}
+
+.admin-rule-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.48rem;
+}
+
+.admin-rule-fields label {
+  margin-bottom: 0.32rem;
+}
+
+.admin-rule-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .admin-slot-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
@@ -1193,6 +1286,8 @@ textarea {
   .split,
   .booking-shell,
   .admin-layout,
+  .admin-extensions,
+  .admin-rule-fields,
   .grid-3 {
     grid-template-columns: 1fr;
   }

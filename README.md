@@ -38,6 +38,16 @@ Optional (recommended for persistence across deployments/instances):
 
 Without KV variables, schedule data falls back to memory and can reset.
 
+Optional (Outlook sync default source):
+
+- `OUTLOOK_ICS_URL` (public/private Outlook ICS URL, can also be set from admin page)
+
+Admin page capabilities:
+
+- Manual slot editing
+- Outlook ICS sync (`/api/admin/outlook-sync`)
+- Recurring availability rules (`/api/admin/apply-rules`)
+
 ## Notes before production
 
 - Replace hosting provider placeholders in `mentions-legales.html`.

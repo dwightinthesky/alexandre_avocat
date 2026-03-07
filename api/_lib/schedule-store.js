@@ -3,7 +3,23 @@ const HORIZON_DAYS = 120;
 const MEMORY_KEY = "__alexandre_schedule_memory__";
 const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_RE = /^([01]\d|2[0-3]):[03]0$/;
-const DEFAULT_DAY_SLOTS = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"];
+const RULE_DAY_VALUES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const RULE_DAY_SET = new Set(RULE_DAY_VALUES);
+const INDEX_TO_RULE_DAY = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+function buildSlotUniverse() {
+  const slots = [];
+  for (let hour = 8; hour <= 20; hour += 1) {
+    slots.push(`${String(hour).padStart(2, "0")}:00`);
+    if (hour < 20) {
+      slots.push(`${String(hour).padStart(2, "0")}:30`);
+    }
+  }
+  return slots;
+}
+
+const SLOT_UNIVERSE = buildSlotUniverse();
+const DEFAULT_DAY_SLOTS = [...SLOT_UNIVERSE];
 
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
@@ -38,6 +54,75 @@ function normalizeSlotList(slots) {
   return sortSlots(Array.from(unique));
 }
 
+function normalizeRule(rule) {
+  const safe = rule && typeof rule === "object" ? rule : {};
+  const idRaw = String(safe.id || "").trim();
+  const id = idRaw || `rule_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
+  const days = Array.isArray(safe.days)
+    ? Array.from(
+        new Set(
+          safe.days
+            .map((entry) => String(entry || "").trim())
+            .filter((entry) => RULE_DAY_SET.has(entry))
+        )
+      )
+    : [];
+
+  const startTime = String(safe.startTime || "").trim();
+  const endTime = String(safe.endTime || "").trim();
+  const type = safe.type === "available" ? "available" : "unavailable";
+
+  if (!days.length || !TIME_RE.test(startTime) || !TIME_RE.test(endTime) || !(startTime < endTime)) {
+    return null;
+  }
+
+  return {
+    id,
+    days,
+    startTime,
+    endTime,
+    type
+  };
+}
+
+function normalizeRules(rules) {
+  if (!Array.isArray(rules)) return [];
+
+  const normalized = [];
+  const seen = new Set();
+  rules.forEach((rule) => {
+    const parsed = normalizeRule(rule);
+    if (!parsed) return;
+    if (seen.has(parsed.id)) {
+      parsed.id = `rule_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    }
+    seen.add(parsed.id);
+    normalized.push(parsed);
+  });
+
+  return normalized;
+}
+
+function normalizeOutlookIcsUrl(value) {
+  let raw = String(value || "").trim();
+  if (!raw) return "";
+
+  if (raw.startsWith("webcal://")) {
+    raw = `https://${raw.slice("webcal://".length)}`;
+  }
+
+  try {
+    const url = new URL(raw);
+    const isProd = process.env.NODE_ENV === "production";
+    if (isProd && url.protocol !== "https:") return "";
+    if (url.protocol !== "https:" && url.protocol !== "http:") return "";
+    return url.toString();
+  } catch (error) {
+    return "";
+  }
+}
+
 function buildDefaultDays() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -66,9 +151,51 @@ function ensureHorizon(days) {
     if (!Array.isArray(hydrated[key])) {
       hydrated[key] = [...DEFAULT_DAY_SLOTS];
     }
+    hydrated[key] = normalizeSlotList(hydrated[key]);
   }
 
   return hydrated;
+}
+
+function dayNameFromDateKey(dateKey) {
+  if (!DAY_RE.test(String(dateKey || ""))) return "";
+  const [year, month, day] = dateKey.split("-").map((value) => Number(value));
+  if (!year || !month || !day) return "";
+  const weekday = new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+  return INDEX_TO_RULE_DAY[weekday] || "";
+}
+
+function slotsForRule(rule) {
+  return SLOT_UNIVERSE.filter((slot) => slot >= rule.startTime && slot < rule.endTime);
+}
+
+function applyRulesToDays(days, rules) {
+  const normalizedRules = normalizeRules(rules);
+  if (!normalizedRules.length) {
+    return clone(days);
+  }
+
+  const nextDays = {};
+  Object.entries(days || {}).forEach(([dateKey, slots]) => {
+    if (!DAY_RE.test(dateKey)) return;
+
+    const dayName = dayNameFromDateKey(dateKey);
+    const set = new Set(normalizeSlotList(slots));
+
+    normalizedRules.forEach((rule) => {
+      if (!rule.days.includes(dayName)) return;
+      const targets = slotsForRule(rule);
+      if (rule.type === "available") {
+        targets.forEach((slot) => set.add(slot));
+      } else {
+        targets.forEach((slot) => set.delete(slot));
+      }
+    });
+
+    nextDays[dateKey] = sortSlots(Array.from(set));
+  });
+
+  return nextDays;
 }
 
 function normalizeSchedule(raw) {
@@ -81,11 +208,17 @@ function normalizeSchedule(raw) {
     normalizedDays[dateKey] = normalizeSlotList(slots);
   });
 
+  const hasDays = Object.keys(normalizedDays).length > 0;
+  const rules = normalizeRules(safe.rules);
+  const mergedOutlookUrl = safe.outlookIcsUrl !== undefined ? safe.outlookIcsUrl : process.env.OUTLOOK_ICS_URL;
+
   return {
-    version: 1,
+    version: 2,
     timezone: "Europe/Paris",
     slotDurationMinutes: 60,
-    days: ensureHorizon(normalizedDays)
+    outlookIcsUrl: normalizeOutlookIcsUrl(mergedOutlookUrl),
+    rules,
+    days: ensureHorizon(hasDays ? normalizedDays : buildDefaultDays())
   };
 }
 
@@ -141,7 +274,11 @@ async function writeScheduleToKV(schedule) {
 
 function getMemorySchedule() {
   if (!globalThis[MEMORY_KEY]) {
-    globalThis[MEMORY_KEY] = normalizeSchedule({ days: buildDefaultDays() });
+    globalThis[MEMORY_KEY] = normalizeSchedule({
+      days: buildDefaultDays(),
+      rules: [],
+      outlookIcsUrl: process.env.OUTLOOK_ICS_URL || ""
+    });
   }
 
   return globalThis[MEMORY_KEY];
@@ -165,7 +302,18 @@ async function readSchedule() {
 }
 
 async function writeSchedule(raw) {
-  const normalized = normalizeSchedule(raw);
+  const current = await readSchedule();
+  const safe = raw && typeof raw === "object" ? raw : {};
+
+  const merged = {
+    ...current,
+    ...safe,
+    days: safe.days && typeof safe.days === "object" ? safe.days : current.days,
+    rules: Array.isArray(safe.rules) ? safe.rules : current.rules,
+    outlookIcsUrl: safe.outlookIcsUrl !== undefined ? safe.outlookIcsUrl : current.outlookIcsUrl
+  };
+
+  const normalized = normalizeSchedule(merged);
   setMemorySchedule(normalized);
   await writeScheduleToKV(normalized);
   return clone(normalized);
@@ -188,6 +336,14 @@ async function reserveSlot(dateKey, time) {
 }
 
 module.exports = {
+  DAY_RE,
+  TIME_RE,
+  RULE_DAY_VALUES,
+  SLOT_UNIVERSE,
+  normalizeSlotList,
+  normalizeRules,
+  normalizeOutlookIcsUrl,
+  applyRulesToDays,
   normalizeSchedule,
   readSchedule,
   writeSchedule,

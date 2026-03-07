@@ -89,6 +89,70 @@
                 <p class="admin-status" data-admin-editor-status></p>
               </div>
             </div>
+
+            <div class="admin-extensions">
+              <article class="card">
+                <h3>Synchronisation Outlook</h3>
+                <p class="note">
+                  Collez l'URL ICS de votre calendrier Outlook puis lancez la synchronisation pour bloquer les
+                  créneaux occupés.
+                </p>
+                <form class="admin-inline-form" data-admin-sync-form>
+                  <label for="admin_ics_url">URL ICS Outlook</label>
+                  <input
+                    id="admin_ics_url"
+                    data-admin-ics-url
+                    type="url"
+                    placeholder="https://outlook.office365.com/.../calendar.ics"
+                  />
+                  <button class="btn btn-ghost" type="submit">Synchroniser Outlook</button>
+                </form>
+                <p class="admin-status" data-admin-sync-status></p>
+              </article>
+
+              <article class="card">
+                <h3>Règles récurrentes</h3>
+                <p class="note">Exemple: lundi à vendredi, indisponible après 20:00.</p>
+
+                <div class="admin-rule-list" data-admin-rule-list></div>
+
+                <div class="admin-rule-builder">
+                  <div class="admin-rule-days" data-admin-rule-days>
+                    <button class="admin-day-chip" type="button" data-rule-day="Mon">Mon</button>
+                    <button class="admin-day-chip" type="button" data-rule-day="Tue">Tue</button>
+                    <button class="admin-day-chip" type="button" data-rule-day="Wed">Wed</button>
+                    <button class="admin-day-chip" type="button" data-rule-day="Thu">Thu</button>
+                    <button class="admin-day-chip" type="button" data-rule-day="Fri">Fri</button>
+                    <button class="admin-day-chip" type="button" data-rule-day="Sat">Sat</button>
+                    <button class="admin-day-chip" type="button" data-rule-day="Sun">Sun</button>
+                  </div>
+
+                  <div class="admin-rule-fields">
+                    <div>
+                      <label for="admin_rule_start">Début</label>
+                      <select id="admin_rule_start" data-admin-rule-start></select>
+                    </div>
+                    <div>
+                      <label for="admin_rule_end">Fin</label>
+                      <select id="admin_rule_end" data-admin-rule-end></select>
+                    </div>
+                    <div>
+                      <label for="admin_rule_type">Type</label>
+                      <select id="admin_rule_type" data-admin-rule-type>
+                        <option value="unavailable">Indisponible</option>
+                        <option value="available">Disponible</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="admin-rule-actions">
+                    <button class="btn btn-ghost" type="button" data-admin-rule-add>Ajouter la règle</button>
+                    <button class="btn btn-primary" type="button" data-admin-rules-apply>Appliquer les règles</button>
+                  </div>
+                </div>
+                <p class="admin-status" data-admin-rules-status></p>
+              </article>
+            </div>
           </article>
         </div>
       </section>

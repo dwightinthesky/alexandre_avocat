@@ -28,7 +28,12 @@ module.exports = async function handler(req, res) {
       return sendJson(res, 400, { error: "invalid_payload" });
     }
 
-    const next = await writeSchedule({ days: payload.days });
+    const current = await readSchedule();
+    const next = await writeSchedule({
+      days: payload.days,
+      rules: current.rules,
+      outlookIcsUrl: current.outlookIcsUrl
+    });
     return sendJson(res, 200, {
       ok: true,
       timezone: next.timezone,
