@@ -25,7 +25,7 @@ Open: `http://127.0.0.1:4173/index.html`
   - full legal name
   - SIRET
   - hosting provider details
-- Replace `Espace Client` and calendaring placeholder URLs.
+- Replace calendaring placeholder URLs.
 
 ## Deploy to Vercel
 
