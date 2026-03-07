@@ -453,6 +453,7 @@ function setupBookingWidgets() {
     const modeInput = widget.querySelector("[name='appointment_mode']");
     const nameInput = widget.querySelector("[name='appointment_name']");
     const emailInput = widget.querySelector("[name='appointment_email']");
+    const phoneInput = widget.querySelector("[name='appointment_phone']");
     const messageInput = widget.querySelector("[name='appointment_message']");
     const result = widget.querySelector("[data-booking-result]");
     const summary = widget.querySelector("[data-booking-summary]");
@@ -465,6 +466,7 @@ function setupBookingWidgets() {
     const previewTime = widget.querySelector("[data-preview-time]");
     const previewMode = widget.querySelector("[data-preview-mode]");
     const resultName = widget.querySelector("[data-result-name]");
+    const resultPhone = widget.querySelector("[data-result-phone]");
     const resultDate = widget.querySelector("[data-result-date]");
     const resultTime = widget.querySelector("[data-result-time]");
     const resultMode = widget.querySelector("[data-result-mode]");
@@ -480,6 +482,7 @@ function setupBookingWidgets() {
       !modeInput ||
       !nameInput ||
       !emailInput ||
+      !phoneInput ||
       !result ||
       !summary ||
       !googleLink ||
@@ -506,12 +509,18 @@ function setupBookingWidgets() {
     const selectSlotText = lang === "fr" ? "Sélectionnez un horaire." : "Select a time slot.";
     const slotTakenText = lang === "fr" ? "Ce créneau vient d'être réservé. Choisissez un autre horaire." : "This slot was just booked. Please choose another one.";
     const bookingErrorText = lang === "fr" ? "Erreur technique. Merci de réessayer." : "Technical error. Please try again.";
+    const missingPhoneText =
+      lang === "fr" ? "Merci d'indiquer un numéro de téléphone." : "Please provide a phone number.";
     const missingMessageText =
       lang === "fr" ? "Merci d'indiquer brièvement votre situation." : "Please briefly describe your situation.";
     const formatMap =
       lang === "fr"
         ? { online: "En ligne (visioconférence)", cabinet: "En cabinet" }
         : { online: "Online (video consultation)", cabinet: "In-office" };
+
+    phoneInput.addEventListener("input", () => {
+      phoneInput.setCustomValidity("");
+    });
 
     if (messageInput) {
       messageInput.addEventListener("input", () => {
@@ -670,7 +679,16 @@ function setupBookingWidgets() {
       const modeValue = modeInput.value;
       const nameValue = nameInput.value.trim();
       const emailValue = emailInput.value.trim();
+      const phoneValue = phoneInput.value.trim();
       const messageValue = messageInput ? messageInput.value.trim() : "";
+
+      if (!phoneValue) {
+        phoneInput.setCustomValidity(missingPhoneText);
+        phoneInput.reportValidity();
+        phoneInput.focus();
+        return;
+      }
+      phoneInput.setCustomValidity("");
 
       if (messageInput && !messageValue) {
         messageInput.setCustomValidity(missingMessageText);
@@ -682,7 +700,7 @@ function setupBookingWidgets() {
         messageInput.setCustomValidity("");
       }
 
-      if (!dateValue || !timeValue || !modeValue || !nameValue || !emailValue) return;
+      if (!dateValue || !timeValue || !modeValue || !nameValue || !emailValue || !phoneValue) return;
 
       const initialSubmitLabel = submitButton ? submitButton.textContent : "";
       if (submitButton) {
@@ -759,6 +777,7 @@ function setupBookingWidgets() {
         lang === "fr" ? "Réservation effectuée via le site." : "Booking submitted from website.",
         `${lang === "fr" ? "Nom" : "Name"}: ${nameValue}`,
         `Email: ${emailValue}`,
+        `${lang === "fr" ? "Téléphone" : "Phone"}: ${phoneValue}`,
         `${lang === "fr" ? "Format" : "Format"}: ${modeLabel}`,
         messageValue ? `${lang === "fr" ? "Message" : "Message"}: ${messageValue}` : ""
       ]
@@ -815,6 +834,7 @@ function setupBookingWidgets() {
             })} (${modeLabel}).`;
       summary.textContent = summaryText;
       if (resultName) resultName.textContent = nameValue;
+      if (resultPhone) resultPhone.textContent = phoneValue;
       if (resultDate) {
         resultDate.textContent = start.toLocaleDateString(locale, {
           day: "2-digit",

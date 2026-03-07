@@ -99,6 +99,16 @@
               <label for="appointment_email_en">Email</label>
               <input id="appointment_email_en" name="appointment_email" type="email" required />
 
+              <label for="appointment_phone_en">Phone</label>
+              <input
+                id="appointment_phone_en"
+                name="appointment_phone"
+                type="tel"
+                autocomplete="tel"
+                inputmode="tel"
+                required
+              />
+
               <label for="appointment_date_en">Date</label>
               <input id="appointment_date_en" name="appointment_date" type="date" required />
 
@@ -139,6 +149,7 @@
             </div>
             <ul class="booking-meta">
               <li><strong>Name:</strong> <span data-result-name>-</span></li>
+              <li><strong>Phone:</strong> <span data-result-phone>-</span></li>
               <li><strong>Date:</strong> <span data-result-date>-</span></li>
               <li><strong>Time:</strong> <span data-result-time>-</span></li>
               <li><strong>Format:</strong> <span data-result-mode>-</span></li>
