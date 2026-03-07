@@ -6,7 +6,7 @@ Static, fast-loading website for a Paris law office.
 
 - `index.html` (Accueil)
 - `domaines.html` (Domaines d'intervention)
-- `honoraires.html` (Honoraires)
+- `methode.html` (Méthode)
 - `rendez-vous.html` (Prendre Rendez-vous)
 - `mentions-legales.html` (Mentions légales + médiateur)
 - `politique-confidentialite.html` (RGPD)
