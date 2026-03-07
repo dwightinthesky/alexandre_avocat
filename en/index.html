@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700;6..72,800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/styles.css" />
@@ -51,24 +51,35 @@
     </header>
 
     <main id="content" class="container page-main">
-      <section class="hero page-intro" data-animate id="hero">
-        <div class="hero-copy">
-          <span class="eyebrow">Law Office - Paris 5</span>
-          <h1>Clear legal strategy for high-stakes decisions.</h1>
-          <p class="lead">
-            The office supports individuals and businesses through a focused method: assess fast, prioritize precisely,
-            execute with discipline.
-          </p>
-          <div class="hero-proof">
-            <span class="proof-chip"><strong>24h</strong> target first reply</span>
+      <section class="hero hero-home page-intro" data-animate id="hero">
+        <div class="hero-stage">
+          <div class="hero-panel">
+            <span class="eyebrow">Law Office | Paris 5</span>
+            <h1>Made for clarity. Built for action.</h1>
+            <p class="lead">
+              The office supports individuals and businesses with a clear legal method in labor law, family law and
+              patrimonial matters.
+            </p>
+            <div class="hero-mode-grid" aria-label="Consultation formats">
+              <span class="mode-chip is-active">Video consultation</span>
+              <span class="mode-chip">In-office meeting</span>
+              <span class="mode-chip">Direct booking</span>
+            </div>
+            <div class="hero-searchbar" aria-label="Quick booking access">
+              <div class="hero-searchfield">
+                <span class="hero-searchlabel">Format</span>
+                <strong>Online or in office</strong>
+              </div>
+              <div class="hero-searchfield">
+                <span class="hero-searchlabel">Location</span>
+                <strong>Paris 5th</strong>
+              </div>
+              <a class="btn btn-primary magnetic" href="rendez-vous.html">Book now</a>
+            </div>
           </div>
-          <div class="hero-actions">
-            <a class="btn btn-primary magnetic" href="rendez-vous.html">Book a consultation</a>
-            <a class="btn btn-ghost magnetic" href="about.html">Discover the office</a>
-          </div>
-          <div class="hero-tags">
-            <span class="hero-tag">Individuals and businesses</span>
-            <span class="hero-tag">Online or in-office consultation</span>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="hero-visual-frame"></div>
+            <div class="hero-visual-note">Remote and in-office consultations</div>
           </div>
         </div>
       </section>
@@ -76,7 +87,7 @@
       <section class="metric-wall" data-animate>
         <article class="metric-card">
           <strong class="metric-value" data-count="24" data-suffix="h">24h</strong>
-          <span class="metric-label">Target response window for first reply</span>
+          <span class="metric-label">Target first reply</span>
         </article>
         <article class="metric-card">
           <strong class="metric-value" data-count="2">2</strong>
@@ -84,7 +95,7 @@
         </article>
         <article class="metric-card">
           <strong class="metric-value" data-count="2">2</strong>
-          <span class="metric-label">Consultation formats available</span>
+          <span class="metric-label">Consultation formats</span>
         </article>
         <article class="metric-card">
           <strong class="metric-value" data-count="1">1</strong>
@@ -92,26 +103,53 @@
         </article>
       </section>
 
-      <section class="section" data-animate id="value">
+      <section class="section home-solutions" data-animate id="value">
         <div class="section-head">
           <div>
-            <span class="eyebrow">Value proposition</span>
-            <h2>A clear framework from first analysis to final decision.</h2>
+            <span class="eyebrow">Ways to work together</span>
+            <h2>Choose a clear setup from the very first exchange.</h2>
+          </div>
+          <a class="btn btn-ghost magnetic" href="rendez-vous.html">View availability</a>
+        </div>
+        <div class="solution-grid">
+          <article class="solution-tile" data-animate>
+            <span class="solution-kicker">Online</span>
+            <h3>Video consultation</h3>
+            <p>Move quickly, frame the situation and prepare the first decisions with clarity.</p>
+            <a class="solution-link" href="rendez-vous.html">Book</a>
+          </article>
+          <article class="solution-tile" data-animate>
+            <span class="solution-kicker">In office</span>
+            <h3>Meeting in Paris</h3>
+            <p>Work through a sensitive matter in a direct, structured and confidential setting.</p>
+            <a class="solution-link" href="rendez-vous.html">Schedule</a>
+          </article>
+          <article class="solution-tile" data-animate>
+            <span class="solution-kicker">Direct</span>
+            <h3>Book on the website</h3>
+            <p>Choose the slot, receive confirmation immediately and add it to your personal calendar.</p>
+            <a class="solution-link" href="rendez-vous.html">Open booking</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section trust-section" data-animate id="contexts">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Supported contexts</span>
+            <h2>Built for individuals and businesses.</h2>
           </div>
         </div>
-        <div class="grid grid-3">
-          <article class="card tilt-card">
-            <h3>Assess fast</h3>
-            <p>Immediate mapping of facts, useful documents and real legal exposure.</p>
-          </article>
-          <article class="card tilt-card">
-            <h3>Prioritize right</h3>
-            <p>Actions ranked by impact, urgency and expected legal outcome.</p>
-          </article>
-          <article class="card tilt-card">
-            <h3>Execute with focus</h3>
-            <p>Direct communication and disciplined handling across the entire matter.</p>
-          </article>
+        <p class="lead trust-lead">
+          The office works on matters that require clarity, pace and discretion in execution.
+        </p>
+        <div class="trust-grid" aria-label="Client and matter types">
+          <span class="trust-chip">Employers</span>
+          <span class="trust-chip">Employees</span>
+          <span class="trust-chip">Executives</span>
+          <span class="trust-chip">Families</span>
+          <span class="trust-chip">Patrimony</span>
+          <span class="trust-chip">Sensitive decisions</span>
         </div>
       </section>
 
@@ -119,7 +157,7 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">Main activities</span>
-            <h2>Practice Areas</h2>
+            <h2>Two practice areas, one disciplined method.</h2>
           </div>
           <a class="btn btn-ghost magnetic" href="domaines.html">View details</a>
         </div>
@@ -130,7 +168,7 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">Profile-based approach</span>
-            <h2>Messaging adapted to your context.</h2>
+            <h2>A response adapted to your context.</h2>
           </div>
         </div>
         <div class="value-switcher" data-switcher>

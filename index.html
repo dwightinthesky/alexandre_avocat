@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700;6..72,800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="assets/styles.css" />
@@ -51,24 +51,35 @@
     </header>
 
     <main id="content" class="container page-main">
-      <section class="hero page-intro" data-animate id="hero">
-        <div class="hero-copy">
-          <span class="eyebrow">Cabinet d'avocat - Paris 5</span>
-          <h1>Stratégie juridique nette pour décisions à fort enjeu.</h1>
-          <p class="lead">
-            Le cabinet accompagne particuliers et entreprises avec une méthode sobre: analyser vite, prioriser juste,
-            exécuter sans dispersion.
-          </p>
-          <div class="hero-proof">
-            <span class="proof-chip"><strong>24h</strong> premier retour cible</span>
+      <section class="hero hero-home page-intro" data-animate id="hero">
+        <div class="hero-stage">
+          <div class="hero-panel">
+            <span class="eyebrow">Cabinet d'avocat | Paris 5</span>
+            <h1>Pensé pour décider. Construit pour agir.</h1>
+            <p class="lead">
+              Le cabinet accompagne particuliers et entreprises avec une stratégie lisible en droit du travail, en
+              droit de la famille et du patrimoine.
+            </p>
+            <div class="hero-mode-grid" aria-label="Formats de consultation">
+              <span class="mode-chip is-active">Consultation en ligne</span>
+              <span class="mode-chip">Rendez-vous au cabinet</span>
+              <span class="mode-chip">Réservation directe</span>
+            </div>
+            <div class="hero-searchbar" aria-label="Accès rapide à la réservation">
+              <div class="hero-searchfield">
+                <span class="hero-searchlabel">Format</span>
+                <strong>En ligne ou au cabinet</strong>
+              </div>
+              <div class="hero-searchfield">
+                <span class="hero-searchlabel">Lieu</span>
+                <strong>Paris 5e</strong>
+              </div>
+              <a class="btn btn-primary magnetic" href="rendez-vous.html">Réserver</a>
+            </div>
           </div>
-          <div class="hero-actions">
-            <a class="btn btn-primary magnetic" href="rendez-vous.html">Prendre un rendez-vous</a>
-            <a class="btn btn-ghost magnetic" href="a-propos.html">Découvrir le cabinet</a>
-          </div>
-          <div class="hero-tags">
-            <span class="hero-tag">Particuliers et entreprises</span>
-            <span class="hero-tag">Consultation en ligne ou en cabinet</span>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="hero-visual-frame"></div>
+            <div class="hero-visual-note">Consultations à distance et au cabinet</div>
           </div>
         </div>
       </section>
@@ -76,7 +87,7 @@
       <section class="metric-wall" data-animate>
         <article class="metric-card">
           <strong class="metric-value" data-count="24" data-suffix="h">24h</strong>
-          <span class="metric-label">Délai cible pour un premier retour</span>
+          <span class="metric-label">Premier retour cible</span>
         </article>
         <article class="metric-card">
           <strong class="metric-value" data-count="2">2</strong>
@@ -84,34 +95,61 @@
         </article>
         <article class="metric-card">
           <strong class="metric-value" data-count="2">2</strong>
-          <span class="metric-label">Formats de consultation disponibles</span>
+          <span class="metric-label">Formats de consultation</span>
         </article>
         <article class="metric-card">
           <strong class="metric-value" data-count="1">1</strong>
-          <span class="metric-label">Interlocuteur juridique principal</span>
+          <span class="metric-label">Interlocuteur juridique</span>
         </article>
       </section>
 
-      <section class="section" data-animate id="valeur">
+      <section class="section home-solutions" data-animate id="valeur">
         <div class="section-head">
           <div>
-            <span class="eyebrow">Proposition de valeur</span>
-            <h2>Un cadre lisible, de la première analyse à la décision.</h2>
+            <span class="eyebrow">Formats d'accompagnement</span>
+            <h2>Choisir une organisation claire dès le premier échange.</h2>
+          </div>
+          <a class="btn btn-ghost magnetic" href="rendez-vous.html">Voir les créneaux</a>
+        </div>
+        <div class="solution-grid">
+          <article class="solution-tile" data-animate>
+            <span class="solution-kicker">En ligne</span>
+            <h3>Consultation vidéo</h3>
+            <p>Pour avancer rapidement, cadrer la situation et préparer les premières décisions.</p>
+            <a class="solution-link" href="rendez-vous.html">Réserver</a>
+          </article>
+          <article class="solution-tile" data-animate>
+            <span class="solution-kicker">Au cabinet</span>
+            <h3>Rendez-vous à Paris</h3>
+            <p>Pour travailler un dossier sensible avec un échange direct, structuré et confidentiel.</p>
+            <a class="solution-link" href="rendez-vous.html">Prendre rendez-vous</a>
+          </article>
+          <article class="solution-tile" data-animate>
+            <span class="solution-kicker">Direct</span>
+            <h3>Réservation sur le site</h3>
+            <p>Choix du créneau, confirmation immédiate et ajout en un clic à votre agenda personnel.</p>
+            <a class="solution-link" href="rendez-vous.html">Ouvrir le module</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section trust-section" data-animate id="contextes">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Contextes accompagnés</span>
+            <h2>Pour particuliers et entreprises.</h2>
           </div>
         </div>
-        <div class="grid grid-3">
-          <article class="card tilt-card">
-            <h3>Analyser vite</h3>
-            <p>Cartographie immédiate des faits, pièces utiles et risques juridiques réels.</p>
-          </article>
-          <article class="card tilt-card">
-            <h3>Prioriser juste</h3>
-            <p>Hiérarchisation des actions selon impact, urgence et probabilité de résultat.</p>
-          </article>
-          <article class="card tilt-card">
-            <h3>Exécution stratégique et sécurisée</h3>
-            <p>Positionnement clair, communication directe et pilotage rigoureux du dossier.</p>
-          </article>
+        <p class="lead trust-lead">
+          Le cabinet intervient sur des situations qui exigent clarté, cadence et discrétion dans l'exécution.
+        </p>
+        <div class="trust-grid" aria-label="Typologies de clients et de dossiers">
+          <span class="trust-chip">Employeurs</span>
+          <span class="trust-chip">Salariés</span>
+          <span class="trust-chip">Dirigeants</span>
+          <span class="trust-chip">Familles</span>
+          <span class="trust-chip">Patrimoine</span>
+          <span class="trust-chip">Décisions sensibles</span>
         </div>
       </section>
 
@@ -119,7 +157,7 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">Activités dominantes</span>
-            <h2>Domaines d'intervention</h2>
+            <h2>Deux domaines d'intervention, une méthode très structurée.</h2>
           </div>
           <a class="btn btn-ghost magnetic" href="domaines.html">Voir le détail</a>
         </div>
@@ -130,7 +168,7 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">Approche par profil</span>
-            <h2>Un discours ajusté à votre contexte.</h2>
+            <h2>Une réponse ajustée à votre contexte.</h2>
           </div>
         </div>
         <div class="value-switcher" data-switcher>

@@ -1,5 +1,7 @@
 const consentKey = "aa_cookie_consent";
 
+document.documentElement.classList.add("js");
+
 function setupCookieBanner() {
   const banner = document.getElementById("cookie-banner");
   if (!banner) return;
