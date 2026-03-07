@@ -673,12 +673,10 @@ window.addEventListener("DOMContentLoaded", () => {
   setupScrollProgress();
   setupMagneticButtons();
   setupServiceCards();
-  setupTiltCards();
   setupAccordion();
   setupScrambleText();
   setupMetricCounters();
   setupValueSwitcher();
   setupQuickRail();
-  setupParallax();
   setupBookingWidgets();
 });
