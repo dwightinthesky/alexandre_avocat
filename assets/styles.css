@@ -10,7 +10,7 @@
   --line: #d6e1ea;
   --line-strong: #b9cad8;
   --focus: #0b76a6;
-  --container: min(1220px, 92vw);
+  --container: min(1380px, 95vw);
   --radius-sm: 0.65rem;
   --radius-md: 0.95rem;
   --radius-pill: 999px;
@@ -435,7 +435,7 @@ p {
 
 .hero-stage {
   display: grid;
-  grid-template-columns: minmax(0, 470px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 540px) minmax(0, 1fr);
   min-height: 620px;
   border: 1px solid rgba(185, 202, 216, 0.88);
   border-radius: 1.6rem;
@@ -453,7 +453,7 @@ p {
 }
 
 .hero-panel .lead {
-  max-width: 30rem;
+  max-width: 34rem;
 }
 
 .hero-home h1 {
@@ -633,7 +633,7 @@ p {
 }
 
 .section-copy {
-  max-width: 66rem;
+  max-width: 74rem;
 }
 
 .section-head .eyebrow {
@@ -641,7 +641,7 @@ p {
 }
 
 .section-head h2 {
-  max-width: 16ch;
+  max-width: 24ch;
   margin-bottom: 0.7rem;
   font-size: clamp(2.6rem, 5vw, 4.7rem);
   line-height: 0.94;
@@ -649,7 +649,7 @@ p {
 }
 
 .section-summary {
-  max-width: 58rem;
+  max-width: 72rem;
   margin: 0;
   color: var(--black-soft);
   font-family: var(--font-sans);
@@ -764,7 +764,7 @@ p {
 .solution-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.15rem;
 }
 
 .solution-tile {
@@ -809,7 +809,7 @@ p {
 .trust-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.9rem;
+  gap: 1rem;
 }
 
 .trust-chip {
