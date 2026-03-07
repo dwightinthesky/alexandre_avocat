@@ -256,6 +256,7 @@ function setupServiceCards() {
         icon: "TR",
         meta: "Relation de travail",
         title: "Droit du travail",
+        focusLabel: "Priorité",
         description:
           "Gestion des phases critiques de la relation de travail, côté employeur comme côté salarié, avec exécution documentée."
       }
@@ -269,11 +270,12 @@ function setupServiceCards() {
           "Guidance for sensitive family and patrimonial situations with a stable and understandable legal path."
       },
       {
-        icon: "EM",
-        meta: "Employment matters",
-        title: "Employment Law",
+        icon: "LB",
+        meta: "Labor matters",
+        title: "Labor Law",
+        focusLabel: "Primary focus",
         description:
-          "Support during critical employment stages for both employers and employees, with documented execution."
+          "Support during critical labor phases for both employers and employees, with documented execution."
       }
     ]
   };
@@ -284,10 +286,12 @@ function setupServiceCards() {
     grid.innerHTML = services
       .map(
         (service) => `
-          <article class="card tilt-card service-card">
+          <article class="card tilt-card service-card${service.focusLabel ? " service-focus" : ""}">
             <div class="service-head">
               <span class="service-icon" aria-hidden="true">${escapeHTML(service.icon)}</span>
-              <span class="service-meta">${escapeHTML(service.meta)}</span>
+              <span class="service-meta">${escapeHTML(service.meta)}</span>${
+                service.focusLabel ? `<span class="service-focus-tag">${escapeHTML(service.focusLabel)}</span>` : ""
+              }
             </div>
             <h3>${escapeHTML(service.title)}</h3>
             <p>${escapeHTML(service.description)}</p>

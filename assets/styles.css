@@ -636,6 +636,29 @@ p {
   text-transform: uppercase;
 }
 
+.service-focus-tag {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(0, 132, 189, 0.44);
+  border-radius: var(--radius-pill);
+  background: rgba(223, 243, 251, 0.94);
+  color: var(--blithe-deep);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.42rem;
+}
+
+.service-focus {
+  margin-left: -0.6rem;
+  margin-right: -0.6rem;
+  border-top-color: rgba(0, 132, 189, 0.82);
+  background: linear-gradient(90deg, rgba(223, 243, 251, 0.82), rgba(223, 243, 251, 0));
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+}
+
 .highlight-box {
   border-left: 2px solid var(--blithe);
   background: rgba(223, 243, 251, 0.48);
