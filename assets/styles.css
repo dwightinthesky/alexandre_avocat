@@ -129,20 +129,6 @@ iframe {
     radial-gradient(circle at 93% 86%, rgba(11, 13, 16, 0.07) 0, transparent 27%);
 }
 
-.pointer-glow {
-  position: fixed;
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(0, 132, 189, 0.2) 0, rgba(0, 132, 189, 0) 72%);
-  transform: translate(-50%, -50%);
-  z-index: 6;
-  mix-blend-mode: multiply;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
 .scroll-progress {
   position: fixed;
   top: 0;
@@ -1145,12 +1131,6 @@ textarea {
 @keyframes drawStroke {
   to {
     stroke-dashoffset: 0;
-  }
-}
-
-@media (hover: none) {
-  .pointer-glow {
-    display: none;
   }
 }
 

@@ -78,32 +78,6 @@ function setupScrollProgress() {
   window.addEventListener("resize", update);
 }
 
-function setupPointerGlow() {
-  const glow = document.getElementById("pointer-glow");
-  if (!glow) return;
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduced) return;
-
-  let raf = 0;
-  let nextX = 0;
-  let nextY = 0;
-
-  const render = () => {
-    glow.style.opacity = "1";
-    glow.style.left = `${nextX}px`;
-    glow.style.top = `${nextY}px`;
-    raf = 0;
-  };
-
-  window.addEventListener("pointermove", (event) => {
-    nextX = event.clientX;
-    nextY = event.clientY;
-    if (!raf) {
-      raf = window.requestAnimationFrame(render);
-    }
-  });
-}
-
 function setupMagneticButtons() {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduced) return;
@@ -693,7 +667,6 @@ window.addEventListener("DOMContentLoaded", () => {
   setupMobileMenu();
   setupRevealAnimation();
   setupScrollProgress();
-  setupPointerGlow();
   setupMagneticButtons();
   setupServiceCards();
   setupTiltCards();
