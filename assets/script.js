@@ -362,6 +362,7 @@ function setupBookingWidgets() {
     const form = widget.querySelector("form");
     const dateInput = widget.querySelector("[name='appointment_date']");
     const timeInput = widget.querySelector("[name='appointment_time']");
+    const modeInput = widget.querySelector("[name='appointment_mode']");
     const nameInput = widget.querySelector("[name='appointment_name']");
     const emailInput = widget.querySelector("[name='appointment_email']");
     const messageInput = widget.querySelector("[name='appointment_message']");
@@ -374,9 +375,11 @@ function setupBookingWidgets() {
     const selectedTimeLabel = widget.querySelector("[data-selected-time]");
     const previewDate = widget.querySelector("[data-preview-date]");
     const previewTime = widget.querySelector("[data-preview-time]");
+    const previewMode = widget.querySelector("[data-preview-mode]");
     const resultName = widget.querySelector("[data-result-name]");
     const resultDate = widget.querySelector("[data-result-date]");
     const resultTime = widget.querySelector("[data-result-time]");
+    const resultMode = widget.querySelector("[data-result-mode]");
     const slotButtons = Array.from(widget.querySelectorAll("[data-slot-value]"));
     const lang = widget.getAttribute("data-lang") === "en" ? "en" : "fr";
     const locale = lang === "fr" ? "fr-FR" : "en-GB";
@@ -385,6 +388,7 @@ function setupBookingWidgets() {
       !form ||
       !dateInput ||
       !timeInput ||
+      !modeInput ||
       !nameInput ||
       !emailInput ||
       !result ||
@@ -402,9 +406,14 @@ function setupBookingWidgets() {
     dateInput.setAttribute("min", minDate);
 
     let icsUrl = "";
-    const emptyDateText = lang === "fr" ? "A selectionner" : "To be selected";
-    const emptyTimeText = lang === "fr" ? "A selectionner" : "To be selected";
-    const emptySlotText = lang === "fr" ? "Aucun horaire selectionne." : "No time selected yet.";
+    const emptyDateText = lang === "fr" ? "À sélectionner" : "To be selected";
+    const emptyTimeText = lang === "fr" ? "À sélectionner" : "To be selected";
+    const emptyModeText = lang === "fr" ? "À sélectionner" : "To be selected";
+    const emptySlotText = lang === "fr" ? "Aucun horaire sélectionné." : "No time selected yet.";
+    const formatMap =
+      lang === "fr"
+        ? { online: "En ligne (visioconférence)", cabinet: "En cabinet" }
+        : { online: "Online (video consultation)", cabinet: "In-office" };
 
     const updatePreview = () => {
       if (previewDate) {
@@ -423,6 +432,11 @@ function setupBookingWidgets() {
       if (previewTime) {
         previewTime.textContent = timeInput.value || emptyTimeText;
       }
+
+      if (previewMode) {
+        const modeValue = modeInput.value;
+        previewMode.textContent = formatMap[modeValue] || emptyModeText;
+      }
     };
 
     const setSlot = (value) => {
@@ -432,7 +446,7 @@ function setupBookingWidgets() {
       });
       if (selectedTimeLabel) {
         selectedTimeLabel.textContent =
-          lang === "fr" ? `Horaire selectionne: ${value}` : `Selected time: ${value}`;
+          lang === "fr" ? `Horaire sélectionné: ${value}` : `Selected time: ${value}`;
       }
       updatePreview();
     };
@@ -449,6 +463,8 @@ function setupBookingWidgets() {
 
     dateInput.addEventListener("change", updatePreview);
     dateInput.addEventListener("input", updatePreview);
+    modeInput.addEventListener("change", updatePreview);
+    modeInput.addEventListener("input", updatePreview);
 
     if (selectedTimeLabel) {
       selectedTimeLabel.textContent = emptySlotText;
@@ -460,22 +476,36 @@ function setupBookingWidgets() {
 
       const dateValue = dateInput.value;
       const timeValue = timeInput.value;
+      const modeValue = modeInput.value;
       const nameValue = nameInput.value.trim();
       const emailValue = emailInput.value.trim();
       const messageValue = messageInput ? messageInput.value.trim() : "";
 
-      if (!dateValue || !timeValue || !nameValue || !emailValue) return;
+      if (!dateValue || !timeValue || !modeValue || !nameValue || !emailValue) return;
 
       const start = new Date(`${dateValue}T${timeValue}:00`);
       if (Number.isNaN(start.getTime())) return;
       const end = new Date(start.getTime() + 60 * 60 * 1000);
 
-      const location = "Cabinet Alexandre Avocat, Paris";
-      const title = lang === "fr" ? "Rendez-vous en cabinet - Alexandre Avocat" : "In-office meeting - Alexandre Avocat";
+      const modeLabel = formatMap[modeValue] || (lang === "fr" ? "En cabinet" : "In-office");
+      const isOnline = modeValue === "online";
+      const location = isOnline
+        ? lang === "fr"
+          ? "Consultation en visioconférence (lien envoyé après confirmation)"
+          : "Online consultation (link shared after confirmation)"
+        : "Cabinet Alexandre Avocat, Paris";
+      const title = isOnline
+        ? lang === "fr"
+          ? "Consultation en ligne - Alexandre Avocat"
+          : "Online consultation - Alexandre Avocat"
+        : lang === "fr"
+          ? "Rendez-vous en cabinet - Alexandre Avocat"
+          : "In-office meeting - Alexandre Avocat";
       const details = [
-        lang === "fr" ? "Reservation effectuee via le site." : "Booking submitted from website.",
+        lang === "fr" ? "Réservation effectuée via le site." : "Booking submitted from website.",
         `${lang === "fr" ? "Nom" : "Name"}: ${nameValue}`,
         `Email: ${emailValue}`,
+        `${lang === "fr" ? "Format" : "Format"}: ${modeLabel}`,
         messageValue ? `${lang === "fr" ? "Message" : "Message"}: ${messageValue}` : ""
       ]
         .filter(Boolean)
@@ -521,14 +551,14 @@ function setupBookingWidgets() {
 
       const summaryText =
         lang === "fr"
-          ? `Rendez-vous confirme le ${start.toLocaleDateString(locale)} a ${start.toLocaleTimeString(locale, {
+          ? `Rendez-vous confirmé le ${start.toLocaleDateString(locale)} à ${start.toLocaleTimeString(locale, {
               hour: "2-digit",
               minute: "2-digit"
-            })}.`
+            })} (${modeLabel}).`
           : `Appointment confirmed on ${start.toLocaleDateString(locale)} at ${start.toLocaleTimeString(locale, {
               hour: "2-digit",
               minute: "2-digit"
-            })}.`;
+            })} (${modeLabel}).`;
       summary.textContent = summaryText;
       if (resultName) resultName.textContent = nameValue;
       if (resultDate) {
@@ -543,6 +573,9 @@ function setupBookingWidgets() {
           hour: "2-digit",
           minute: "2-digit"
         });
+      }
+      if (resultMode) {
+        resultMode.textContent = modeLabel;
       }
       result.classList.remove("is-hidden");
       result.scrollIntoView({ behavior: "smooth", block: "nearest" });

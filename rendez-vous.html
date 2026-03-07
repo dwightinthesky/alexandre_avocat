@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Prendre un rendez-vous en cabinet a Paris." />
+    <meta name="description" content="Prendre un rendez-vous en ligne ou en cabinet à Paris." />
     <title>Prendre Rendez-vous | Alexandre Avocat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -40,7 +40,7 @@
           </nav>
           <div class="nav-actions">
             <a class="btn btn-primary magnetic" href="rendez-vous.html" aria-current="page">Prendre Rendez-vous</a>
-            <div class="lang-switch" aria-label="Selection de langue">
+            <div class="lang-switch" aria-label="Sélection de langue">
               <span class="lang-link is-active" aria-current="true">FR</span>
               <a class="lang-link" href="en/rendez-vous.html" lang="en" hreflang="en">EN</a>
             </div>
@@ -53,32 +53,32 @@
       <section class="hero page-intro" data-animate>
         <div class="hero-copy">
           <span class="eyebrow">Prendre Rendez-vous</span>
-          <h1>Reservation simple, en presentiel uniquement.</h1>
+          <h1>Réservation simple, en ligne ou en cabinet.</h1>
           <p class="lead">
-            Le module ci-dessous permet de reserver un rendez-vous en cabinet. Aucun paiement n'est demande a la
-            reservation. Les verifications prealables sont traitees au premier entretien en presentiel.
+            Le module ci-dessous permet de réserver un rendez-vous en ligne ou en cabinet. Aucun paiement n'est
+            demandé à la réservation. Les vérifications préalables sont traitées lors du premier entretien.
           </p>
         </div>
         <div class="hero-art" aria-hidden="true">
           <div class="orbit"></div>
-          <span class="badge">Agenda securise</span>
+          <span class="badge">Agenda sécurisé</span>
         </div>
       </section>
 
       <section class="section grid grid-2" data-animate>
         <article class="card tilt-card">
-          <h2>Conditions de reservation</h2>
+          <h2>Conditions de réservation</h2>
           <ul>
-            <li>Format: rendez-vous en cabinet uniquement</li>
-            <li>Aucun paiement en ligne au moment de la prise de creneau</li>
-            <li>Preparation: apportez les pieces utiles a votre dossier</li>
+            <li>Format: consultation en ligne ou rendez-vous en cabinet</li>
+            <li>Aucun paiement en ligne au moment de la prise de créneau</li>
+            <li>Préparation: apportez les pièces utiles à votre dossier</li>
           </ul>
         </article>
         <article class="card tilt-card">
           <h2>Espace Client</h2>
           <p>
-            Si vous etes deja client, utilisez la plateforme documentaire securisee pour partager vos documents avant
-            ou apres rendez-vous.
+            Si vous êtes déjà client, utilisez la plateforme documentaire sécurisée pour partager vos documents avant
+            ou après rendez-vous.
           </p>
           <a class="btn btn-ghost magnetic" href="https://espace-client.exemple.fr" target="_blank" rel="noopener"
             >Ouvrir l'Espace Client</a
@@ -89,18 +89,18 @@
       <section class="section" data-animate>
         <div class="section-head">
           <div>
-            <span class="eyebrow">Module de reservation</span>
-            <h2>Reservation directe sur le site</h2>
+            <span class="eyebrow">Module de réservation</span>
+            <h2>Réservation directe sur le site</h2>
           </div>
         </div>
         <div class="booking-shell" data-booking-widget data-lang="fr">
           <article class="card booking-card-main">
             <div class="booking-stepper" aria-hidden="true">
-              <span class="step-pill is-active">1. Coordonnees</span>
-              <span class="step-pill is-active">2. Creneau</span>
+              <span class="step-pill is-active">1. Coordonnées</span>
+              <span class="step-pill is-active">2. Créneau</span>
               <span class="step-pill">3. Agenda</span>
             </div>
-            <h3>Choisissez votre creneau</h3>
+            <h3>Choisissez votre créneau</h3>
             <form class="booking-form" novalidate>
               <label for="appointment_name_fr">Nom complet</label>
               <input id="appointment_name_fr" name="appointment_name" type="text" required />
@@ -110,6 +110,13 @@
 
               <label for="appointment_date_fr">Date</label>
               <input id="appointment_date_fr" name="appointment_date" type="date" required />
+
+              <label for="appointment_mode_fr">Format de consultation</label>
+              <select id="appointment_mode_fr" name="appointment_mode" required>
+                <option value="" selected disabled>Sélectionnez un format</option>
+                <option value="cabinet">En cabinet</option>
+                <option value="online">En ligne (visioconférence)</option>
+              </select>
 
               <label for="appointment_time_fr">Horaire</label>
               <div class="booking-slot-grid" data-slot-grid>
@@ -121,19 +128,20 @@
                 <button class="booking-slot" type="button" data-slot-value="16:00">16:00</button>
               </div>
               <input id="appointment_time_fr" name="appointment_time" type="hidden" required />
-              <p class="note" data-selected-time>Aucun horaire selectionne.</p>
+              <p class="note" data-selected-time>Aucun horaire sélectionné.</p>
 
               <label for="appointment_message_fr">Message (optionnel)</label>
               <textarea id="appointment_message_fr" name="appointment_message"></textarea>
 
-              <button class="btn btn-primary magnetic" type="submit">Confirmer la reservation</button>
-              <p class="note">Duree standard du rendez-vous: 60 minutes en cabinet.</p>
+              <button class="btn btn-primary magnetic" type="submit">Confirmer la réservation</button>
+              <p class="note">Durée standard du rendez-vous: 60 minutes.</p>
             </form>
 
             <div class="booking-preview">
-              <h4>Apercu du rendez-vous</h4>
-              <p class="booking-preview-line"><strong>Date:</strong> <span data-preview-date>A selectionner</span></p>
-              <p class="booking-preview-line"><strong>Horaire:</strong> <span data-preview-time>A selectionner</span></p>
+              <h4>Aperçu du rendez-vous</h4>
+              <p class="booking-preview-line"><strong>Date:</strong> <span data-preview-date>À sélectionner</span></p>
+              <p class="booking-preview-line"><strong>Horaire:</strong> <span data-preview-time>À sélectionner</span></p>
+              <p class="booking-preview-line"><strong>Format:</strong> <span data-preview-mode>À sélectionner</span></p>
             </div>
           </article>
 
@@ -141,7 +149,7 @@
             <div class="booking-success-head">
               <span class="booking-check" aria-hidden="true">OK</span>
               <div>
-                <h3>Reservation confirmee</h3>
+                <h3>Réservation confirmée</h3>
                 <p class="booking-summary" data-booking-summary></p>
               </div>
             </div>
@@ -149,18 +157,19 @@
               <li><strong>Nom:</strong> <span data-result-name>-</span></li>
               <li><strong>Date:</strong> <span data-result-date>-</span></li>
               <li><strong>Horaire:</strong> <span data-result-time>-</span></li>
+              <li><strong>Format:</strong> <span data-result-mode>-</span></li>
             </ul>
-            <p class="note">Ajoutez votre rendez-vous a votre agenda personnel:</p>
+            <p class="note">Ajoutez votre rendez-vous à votre agenda personnel:</p>
             <div class="booking-calendar-grid">
               <a class="calendar-card" data-link-google target="_blank" rel="noopener"
-                >Ajouter a Google Calendar</a
+                >Ajouter à Google Calendar</a
               >
               <a class="calendar-card" data-link-outlook target="_blank" rel="noopener"
-                >Ajouter a Outlook Calendar</a
+                >Ajouter à Outlook Calendar</a
               >
-              <a class="calendar-card" data-link-apple>Ajouter a Apple Calendar (.ics)</a>
+              <a class="calendar-card" data-link-apple>Ajouter à Apple Calendar (.ics)</a>
             </div>
-            <a class="cookie-link" data-link-ics>Telecharger le fichier .ics</a>
+            <a class="cookie-link" data-link-ics>Télécharger le fichier .ics</a>
           </article>
         </div>
       </section>
@@ -170,16 +179,16 @@
       <div class="container footer-wrap">
         <span>&copy; 2026 Alexandre Avocat - Paris</span>
         <div class="footer-links">
-          <a href="mentions-legales.html">Mentions legales</a>
-          <a href="politique-confidentialite.html">Politique de confidentialite</a>
+          <a href="mentions-legales.html">Mentions légales</a>
+          <a href="politique-confidentialite.html">Politique de confidentialité</a>
         </div>
       </div>
     </footer>
 
     <div class="cookie-banner" id="cookie-banner" hidden>
       <p>
-        Ce site depose des cookies optionnels uniquement apres votre accord explicite (opt-in). Aucun cookie non
-        essentiel n'est actif par defaut.
+        Ce site dépose des cookies optionnels uniquement après votre accord explicite (opt-in). Aucun cookie non
+        essentiel n'est actif par défaut.
       </p>
       <div class="cookie-actions">
         <button class="btn btn-primary magnetic" type="button" data-cookie-choice="accept">Accepter</button>
