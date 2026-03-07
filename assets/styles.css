@@ -85,17 +85,22 @@ iframe {
 .skip-link {
   position: fixed;
   left: 1rem;
-  top: -90px;
+  top: 0.72rem;
   z-index: 60;
   border-radius: var(--radius-xs);
   background: var(--black);
   color: #fff;
   padding: 0.58rem 0.86rem;
   font-size: 0.86rem;
+  opacity: 0;
+  transform: translateY(-180%);
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.skip-link:focus {
-  top: 1rem;
+.skip-link:focus,
+.skip-link:focus-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .site-noise {
@@ -742,8 +747,17 @@ select:focus-visible,
 }
 
 .accordion-panel {
-  padding-top: 0.7rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding-top: 0;
   color: var(--ink-soft);
+  transition: max-height 0.32s ease, opacity 0.26s ease, padding-top 0.26s ease;
+}
+
+.accordion-panel.is-open {
+  opacity: 1;
+  padding-top: 0.7rem;
 }
 
 .panel-hidden {

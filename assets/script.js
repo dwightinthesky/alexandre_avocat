@@ -145,17 +145,50 @@ function setupTiltCards() {
 }
 
 function setupAccordion() {
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   document.querySelectorAll("[data-accordion-trigger]").forEach((trigger) => {
-    trigger.addEventListener("click", () => {
-      const panelId = trigger.getAttribute("aria-controls");
-      if (!panelId) return;
+    const panelId = trigger.getAttribute("aria-controls");
+    if (!panelId) return;
 
-      const panel = document.getElementById(panelId);
-      if (!panel) return;
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
 
+    const syncPanelState = () => {
       const expanded = trigger.getAttribute("aria-expanded") === "true";
-      trigger.setAttribute("aria-expanded", String(!expanded));
-      panel.classList.toggle("panel-hidden", expanded);
+      panel.classList.remove("panel-hidden");
+      panel.classList.toggle("is-open", expanded);
+      panel.style.maxHeight = expanded ? `${panel.scrollHeight}px` : "0px";
+    };
+
+    syncPanelState();
+
+    trigger.addEventListener("click", () => {
+      const expanded = trigger.getAttribute("aria-expanded") === "true";
+      const nextExpanded = !expanded;
+      trigger.setAttribute("aria-expanded", String(nextExpanded));
+      panel.classList.remove("panel-hidden");
+      panel.classList.toggle("is-open", nextExpanded);
+
+      if (nextExpanded) {
+        panel.style.maxHeight = `${panel.scrollHeight}px`;
+        return;
+      }
+
+      panel.style.maxHeight = `${panel.scrollHeight}px`;
+      if (reduced) {
+        panel.style.maxHeight = "0px";
+      } else {
+        requestAnimationFrame(() => {
+          panel.style.maxHeight = "0px";
+        });
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (trigger.getAttribute("aria-expanded") === "true") {
+        panel.style.maxHeight = `${panel.scrollHeight}px`;
+      }
     });
   });
 }
