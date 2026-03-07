@@ -433,6 +433,17 @@ function setupBookingWidgets() {
   const widgets = document.querySelectorAll("[data-booking-widget]");
   if (!widgets.length) return;
 
+  const validSlot = (value) => /^([01]\d|2[0-3]):[03]0$/.test(String(value || ""));
+  const normalizeSlots = (slots) => {
+    if (!Array.isArray(slots)) return [];
+    const unique = new Set();
+    slots.forEach((slot) => {
+      const normalized = String(slot || "").trim();
+      if (validSlot(normalized)) unique.add(normalized);
+    });
+    return Array.from(unique).sort((a, b) => a.localeCompare(b));
+  };
+
   widgets.forEach((widget) => {
     const form = widget.querySelector("form");
     const dateInput = widget.querySelector("[name='appointment_date']");
@@ -455,7 +466,8 @@ function setupBookingWidgets() {
     const resultDate = widget.querySelector("[data-result-date]");
     const resultTime = widget.querySelector("[data-result-time]");
     const resultMode = widget.querySelector("[data-result-mode]");
-    const slotButtons = Array.from(widget.querySelectorAll("[data-slot-value]"));
+    const slotGrid = widget.querySelector("[data-slot-grid]");
+    const submitButton = form ? form.querySelector("button[type='submit']") : null;
     const lang = widget.getAttribute("data-lang") === "en" ? "en" : "fr";
     const locale = lang === "fr" ? "fr-FR" : "en-GB";
 
@@ -471,7 +483,8 @@ function setupBookingWidgets() {
       !googleLink ||
       !outlookLink ||
       !appleLink ||
-      !icsLink
+      !icsLink ||
+      !slotGrid
     ) {
       return;
     }
@@ -481,10 +494,16 @@ function setupBookingWidgets() {
     dateInput.setAttribute("min", minDate);
 
     let icsUrl = "";
+    let availableSlotsByDate = {};
+    let slotButtons = [];
     const emptyDateText = lang === "fr" ? "À sélectionner" : "To be selected";
     const emptyTimeText = lang === "fr" ? "À sélectionner" : "To be selected";
     const emptyModeText = lang === "fr" ? "À sélectionner" : "To be selected";
     const emptySlotText = lang === "fr" ? "Aucun horaire sélectionné." : "No time selected yet.";
+    const loadingSlotText = lang === "fr" ? "Chargement des créneaux..." : "Loading available slots...";
+    const selectSlotText = lang === "fr" ? "Sélectionnez un horaire." : "Select a time slot.";
+    const slotTakenText = lang === "fr" ? "Ce créneau vient d'être réservé. Choisissez un autre horaire." : "This slot was just booked. Please choose another one.";
+    const bookingErrorText = lang === "fr" ? "Erreur technique. Merci de réessayer." : "Technical error. Please try again.";
     const formatMap =
       lang === "fr"
         ? { online: "En ligne (visioconférence)", cabinet: "En cabinet" }
@@ -514,6 +533,39 @@ function setupBookingWidgets() {
       }
     };
 
+    const renderSlots = (slots) => {
+      const safeSlots = normalizeSlots(slots);
+      timeInput.value = "";
+      slotGrid.innerHTML = "";
+      slotButtons = [];
+
+      if (!safeSlots.length) {
+        if (selectedTimeLabel) selectedTimeLabel.textContent = emptySlotText;
+        updatePreview();
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+      safeSlots.forEach((slot) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "booking-slot";
+        button.setAttribute("data-slot-value", slot);
+        button.textContent = slot;
+        button.addEventListener("click", () => {
+          setSlot(slot);
+        });
+        fragment.appendChild(button);
+      });
+
+      slotGrid.appendChild(fragment);
+      slotButtons = Array.from(slotGrid.querySelectorAll("[data-slot-value]"));
+      if (selectedTimeLabel) {
+        selectedTimeLabel.textContent = selectSlotText;
+      }
+      updatePreview();
+    };
+
     const setSlot = (value) => {
       timeInput.value = value;
       slotButtons.forEach((button) => {
@@ -526,27 +578,79 @@ function setupBookingWidgets() {
       updatePreview();
     };
 
-    if (slotButtons.length) {
-      slotButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          const value = button.getAttribute("data-slot-value");
-          if (!value) return;
-          setSlot(value);
-        });
-      });
-    }
+    const firstDateWithSlots = () =>
+      Object.keys(availableSlotsByDate)
+        .filter((dateKey) => dateKey >= minDate && normalizeSlots(availableSlotsByDate[dateKey]).length > 0)
+        .sort((a, b) => a.localeCompare(b))[0] || "";
 
-    dateInput.addEventListener("change", updatePreview);
-    dateInput.addEventListener("input", updatePreview);
+    const syncSlotsForDate = () => {
+      const dateValue = dateInput.value;
+      if (!dateValue) {
+        renderSlots([]);
+        return;
+      }
+      renderSlots(availableSlotsByDate[dateValue] || []);
+    };
+
+    const loadSchedule = async () => {
+      if (selectedTimeLabel) selectedTimeLabel.textContent = loadingSlotText;
+      slotGrid.innerHTML = "";
+      slotButtons = [];
+      availableSlotsByDate = {};
+
+      try {
+        const response = await fetch("/api/schedule", {
+          method: "GET",
+          cache: "no-store",
+          headers: {
+            Accept: "application/json"
+          }
+        });
+        if (!response.ok) {
+          throw new Error("schedule_fetch_failed");
+        }
+        const payload = await response.json();
+        if (payload && payload.days && typeof payload.days === "object") {
+          Object.entries(payload.days).forEach(([dateKey, slots]) => {
+            availableSlotsByDate[dateKey] = normalizeSlots(slots);
+          });
+        }
+      } catch (error) {
+        availableSlotsByDate = {};
+      }
+
+      if (!dateInput.value || normalizeSlots(availableSlotsByDate[dateInput.value]).length === 0) {
+        const candidate = firstDateWithSlots();
+        if (candidate) {
+          dateInput.value = candidate;
+        }
+      }
+
+      syncSlotsForDate();
+      updatePreview();
+    };
+
+    dateInput.addEventListener("change", () => {
+      syncSlotsForDate();
+      updatePreview();
+    });
+    dateInput.addEventListener("input", () => {
+      syncSlotsForDate();
+      updatePreview();
+    });
     modeInput.addEventListener("change", updatePreview);
     modeInput.addEventListener("input", updatePreview);
 
     if (selectedTimeLabel) {
-      selectedTimeLabel.textContent = emptySlotText;
+      selectedTimeLabel.textContent = loadingSlotText;
+    }
+    if (!dateInput.value) {
+      dateInput.value = minDate;
     }
     updatePreview();
+    loadSchedule();
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       const dateValue = dateInput.value;
@@ -557,6 +661,59 @@ function setupBookingWidgets() {
       const messageValue = messageInput ? messageInput.value.trim() : "";
 
       if (!dateValue || !timeValue || !modeValue || !nameValue || !emailValue) return;
+
+      const initialSubmitLabel = submitButton ? submitButton.textContent : "";
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = lang === "fr" ? "Confirmation en cours..." : "Confirming...";
+      }
+
+      try {
+        const bookingResponse = await fetch("/api/schedule/book", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          },
+          body: JSON.stringify({
+            date: dateValue,
+            time: timeValue
+          })
+        });
+
+        if (bookingResponse.status === 409) {
+          const conflictPayload = await bookingResponse.json().catch(() => ({}));
+          if (conflictPayload && conflictPayload.days && typeof conflictPayload.days === "object") {
+            availableSlotsByDate = {};
+            Object.entries(conflictPayload.days).forEach(([dateKey, slots]) => {
+              availableSlotsByDate[dateKey] = normalizeSlots(slots);
+            });
+          }
+          if (selectedTimeLabel) selectedTimeLabel.textContent = slotTakenText;
+          syncSlotsForDate();
+          return;
+        }
+
+        if (!bookingResponse.ok) {
+          throw new Error("booking_failed");
+        }
+
+        const bookingPayload = await bookingResponse.json().catch(() => ({}));
+        if (bookingPayload && bookingPayload.days && typeof bookingPayload.days === "object") {
+          availableSlotsByDate = {};
+          Object.entries(bookingPayload.days).forEach(([dateKey, slots]) => {
+            availableSlotsByDate[dateKey] = normalizeSlots(slots);
+          });
+        }
+      } catch (error) {
+        if (selectedTimeLabel) selectedTimeLabel.textContent = bookingErrorText;
+        return;
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = initialSubmitLabel;
+        }
+      }
 
       const start = new Date(`${dateValue}T${timeValue}:00`);
       if (Number.isNaN(start.getTime())) return;
@@ -653,6 +810,7 @@ function setupBookingWidgets() {
         resultMode.textContent = modeLabel;
       }
       result.classList.remove("is-hidden");
+      syncSlotsForDate();
       result.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
 

@@ -1135,6 +1135,129 @@ textarea {
   display: none;
 }
 
+.admin-shell {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-login-form {
+  margin-top: 0.8rem;
+  max-width: 28rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.admin-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.admin-layout {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 240px) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.admin-date-list {
+  border: 1px solid rgba(179, 198, 214, 0.88);
+  border-radius: 0.65rem;
+  padding: 0.35rem;
+  display: grid;
+  gap: 0.35rem;
+  max-height: 28rem;
+  overflow-y: auto;
+  background: #fff;
+}
+
+.admin-date-btn {
+  width: 100%;
+  border: 1px solid rgba(179, 198, 214, 0.82);
+  border-radius: 0.6rem;
+  background: #fff;
+  color: var(--black-soft);
+  display: grid;
+  justify-items: start;
+  gap: 0.1rem;
+  text-align: left;
+  padding: 0.52rem 0.62rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.admin-date-btn small {
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+}
+
+.admin-date-btn:hover {
+  border-color: rgba(0, 132, 189, 0.58);
+}
+
+.admin-date-btn.is-active {
+  border-color: rgba(0, 132, 189, 0.9);
+  background: rgba(223, 243, 251, 0.9);
+  color: var(--black);
+}
+
+.admin-date-title {
+  margin-bottom: 0.75rem;
+}
+
+.admin-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  gap: 0.42rem;
+}
+
+.admin-slot-btn {
+  border: 1px solid rgba(179, 198, 214, 0.88);
+  border-radius: 0.55rem;
+  background: #fff;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  padding: 0.48rem 0.4rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.admin-slot-btn:hover {
+  border-color: rgba(0, 132, 189, 0.62);
+}
+
+.admin-slot-btn.is-active {
+  background: var(--blithe);
+  border-color: var(--blithe-deep);
+  color: #fff;
+}
+
+.admin-status {
+  margin: 0;
+  min-height: 1.25rem;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.admin-status.is-error {
+  color: #b42318;
+}
+
+.admin-status.is-success {
+  color: #157347;
+}
+
 .is-hidden {
   display: none !important;
 }
@@ -1266,5 +1389,13 @@ textarea {
 
   .lang-switch {
     margin-left: 0;
+  }
+
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-date-list {
+    max-height: 14rem;
   }
 }
