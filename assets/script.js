@@ -256,6 +256,74 @@ function setupMetricCounters() {
   counters.forEach((counter) => observer.observe(counter));
 }
 
+function escapeHTML(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function setupServiceCards() {
+  const grids = document.querySelectorAll("[data-service-grid]");
+  if (!grids.length) return;
+
+  const serviceMap = {
+    fr: [
+      {
+        icon: "FP",
+        meta: "Famille et patrimoine",
+        title: "Droit de la famille et du patrimoine",
+        description:
+          "Accompagnement des situations familiales et patrimoniales sensibles avec une trajectoire juridique stable et compréhensible."
+      },
+      {
+        icon: "TR",
+        meta: "Relation de travail",
+        title: "Droit du travail",
+        description:
+          "Gestion des phases critiques de la relation de travail, côté employeur comme côté salarié, avec exécution documentée."
+      }
+    ],
+    en: [
+      {
+        icon: "FP",
+        meta: "Family and patrimony",
+        title: "Family and Patrimonial Law",
+        description:
+          "Guidance for sensitive family and patrimonial situations with a stable and understandable legal path."
+      },
+      {
+        icon: "EM",
+        meta: "Employment matters",
+        title: "Employment Law",
+        description:
+          "Support during critical employment stages for both employers and employees, with documented execution."
+      }
+    ]
+  };
+
+  grids.forEach((grid) => {
+    const lang = grid.getAttribute("data-lang") === "en" ? "en" : "fr";
+    const services = serviceMap[lang] || serviceMap.fr;
+    grid.innerHTML = services
+      .map(
+        (service) => `
+          <article class="card tilt-card service-card">
+            <div class="service-head">
+              <span class="service-icon" aria-hidden="true">${escapeHTML(service.icon)}</span>
+              <span class="service-meta">${escapeHTML(service.meta)}</span>
+            </div>
+            <h3>${escapeHTML(service.title)}</h3>
+            <p>${escapeHTML(service.description)}</p>
+          </article>
+        `
+      )
+      .join("");
+  });
+}
+
 function setupValueSwitcher() {
   const root = document.querySelector("[data-switcher]");
   if (!root) return;
@@ -627,6 +695,7 @@ window.addEventListener("DOMContentLoaded", () => {
   setupScrollProgress();
   setupPointerGlow();
   setupMagneticButtons();
+  setupServiceCards();
   setupTiltCards();
   setupAccordion();
   setupScrambleText();
