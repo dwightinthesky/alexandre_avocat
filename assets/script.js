@@ -506,10 +506,18 @@ function setupBookingWidgets() {
     const selectSlotText = lang === "fr" ? "Sélectionnez un horaire." : "Select a time slot.";
     const slotTakenText = lang === "fr" ? "Ce créneau vient d'être réservé. Choisissez un autre horaire." : "This slot was just booked. Please choose another one.";
     const bookingErrorText = lang === "fr" ? "Erreur technique. Merci de réessayer." : "Technical error. Please try again.";
+    const missingMessageText =
+      lang === "fr" ? "Merci d'indiquer brièvement votre situation." : "Please briefly describe your situation.";
     const formatMap =
       lang === "fr"
         ? { online: "En ligne (visioconférence)", cabinet: "En cabinet" }
         : { online: "Online (video consultation)", cabinet: "In-office" };
+
+    if (messageInput) {
+      messageInput.addEventListener("input", () => {
+        messageInput.setCustomValidity("");
+      });
+    }
 
     const updatePreview = () => {
       if (previewDate) {
@@ -655,12 +663,24 @@ function setupBookingWidgets() {
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
+      if (!form.reportValidity()) return;
+
       const dateValue = dateInput.value;
       const timeValue = timeInput.value;
       const modeValue = modeInput.value;
       const nameValue = nameInput.value.trim();
       const emailValue = emailInput.value.trim();
       const messageValue = messageInput ? messageInput.value.trim() : "";
+
+      if (messageInput && !messageValue) {
+        messageInput.setCustomValidity(missingMessageText);
+        messageInput.reportValidity();
+        messageInput.focus();
+        return;
+      }
+      if (messageInput) {
+        messageInput.setCustomValidity("");
+      }
 
       if (!dateValue || !timeValue || !modeValue || !nameValue || !emailValue) return;
 
