@@ -182,7 +182,7 @@ iframe {
   display: block;
   color: var(--black);
   font-family: var(--font-sans);
-  font-size: clamp(1.3rem, 2.2vw, 2rem);
+  font-size: clamp(1.08rem, 1.55vw, 1.5rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.04;
@@ -458,7 +458,7 @@ p {
 
 .hero-home h1 {
   max-width: 10ch;
-  font-size: clamp(3rem, 6.4vw, 5.4rem);
+  font-size: clamp(2.45rem, 4.8vw, 4.35rem);
   line-height: 0.94;
 }
 
@@ -1716,7 +1716,7 @@ textarea {
   }
 
   .brand-title {
-    font-size: clamp(1.1rem, 7vw, 1.7rem);
+    font-size: clamp(1rem, 5.5vw, 1.28rem);
   }
 
   .brand-sub {
@@ -1771,7 +1771,7 @@ textarea {
 
   .hero-home h1 {
     max-width: 12ch;
-    font-size: clamp(2.55rem, 12vw, 4rem);
+    font-size: clamp(2.1rem, 9vw, 3.3rem);
   }
 
   .hero-searchbar {
