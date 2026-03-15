@@ -458,8 +458,11 @@ input:focus-visible,textarea:focus-visible,select:focus-visible,
 .accordion-trigger[aria-expanded="true"]::after { transform:rotate(45deg);color:var(--blue) }
 
 .accordion-panel {
-  max-height:0;opacity:0;overflow:hidden;padding-top:0;
-  transition:max-height .35s ease,opacity .28s ease,padding-top .28s ease;
+  max-height:none;
+  opacity:1;
+  overflow:visible;
+  padding-top:.6rem;
+  transition:opacity .2s ease;
 }
 .accordion-panel.is-open { opacity:1;padding-top:.6rem }
 .panel-hidden { display:none }

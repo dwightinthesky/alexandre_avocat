@@ -6,7 +6,13 @@ function setupCookieBanner() {
   const banner = document.getElementById("cookie-banner");
   if (!banner) return;
 
-  const storedConsent = localStorage.getItem(consentKey);
+  let storedConsent = null;
+  try {
+    storedConsent = localStorage.getItem(consentKey);
+  } catch (error) {
+    storedConsent = null;
+  }
+
   if (!storedConsent) {
     banner.hidden = false;
   }
@@ -15,7 +21,11 @@ function setupCookieBanner() {
     button.addEventListener("click", () => {
       const choice = button.getAttribute("data-cookie-choice");
       if (choice === "accept" || choice === "reject") {
-        localStorage.setItem(consentKey, choice);
+        try {
+          localStorage.setItem(consentKey, choice);
+        } catch (error) {
+          // Ignore storage failures in restricted/private contexts.
+        }
       }
       banner.hidden = true;
     });
@@ -123,8 +133,6 @@ function setupTiltCards() {
 }
 
 function setupAccordion() {
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
   document.querySelectorAll("[data-accordion-trigger]").forEach((trigger) => {
     const panelId = trigger.getAttribute("aria-controls");
     if (!panelId) return;
@@ -132,15 +140,10 @@ function setupAccordion() {
     const panel = document.getElementById(panelId);
     if (!panel) return;
 
-    const setExpandedHeight = () => {
-      panel.style.maxHeight = `${panel.scrollHeight}px`;
-    };
-
     const syncPanelState = () => {
       const expanded = trigger.getAttribute("aria-expanded") === "true";
-      panel.classList.remove("panel-hidden");
       panel.classList.toggle("is-open", expanded);
-      panel.style.maxHeight = expanded ? "none" : "0px";
+      panel.classList.toggle("panel-hidden", !expanded);
     };
 
     syncPanelState();
@@ -149,54 +152,9 @@ function setupAccordion() {
       const expanded = trigger.getAttribute("aria-expanded") === "true";
       const nextExpanded = !expanded;
       trigger.setAttribute("aria-expanded", String(nextExpanded));
-      panel.classList.remove("panel-hidden");
       panel.classList.toggle("is-open", nextExpanded);
-
-      if (nextExpanded) {
-        setExpandedHeight();
-        requestAnimationFrame(() => {
-          setExpandedHeight();
-        });
-        return;
-      }
-
-      if (panel.style.maxHeight === "none") {
-        setExpandedHeight();
-      }
-      panel.style.maxHeight = `${panel.scrollHeight}px`;
-      if (reduced) {
-        panel.style.maxHeight = "0px";
-      } else {
-        requestAnimationFrame(() => {
-          panel.style.maxHeight = "0px";
-        });
-      }
+      panel.classList.toggle("panel-hidden", !nextExpanded);
     });
-
-    panel.addEventListener("transitionend", (event) => {
-      if (event.propertyName !== "max-height") return;
-      const expanded = trigger.getAttribute("aria-expanded") === "true";
-      if (expanded) {
-        panel.style.maxHeight = "none";
-      }
-    });
-
-    window.addEventListener("resize", () => {
-      if (trigger.getAttribute("aria-expanded") === "true") {
-        panel.style.maxHeight = "none";
-      }
-    });
-
-    if (document.fonts && typeof document.fonts.ready?.then === "function") {
-      document.fonts.ready.then(() => {
-        if (trigger.getAttribute("aria-expanded") === "true") {
-          panel.style.maxHeight = "none";
-        }
-      }).catch(() => {
-        // Ignore font loading errors; accordion still works.
-      }
-      );
-    }
   });
 }
 
