@@ -132,11 +132,15 @@ function setupAccordion() {
     const panel = document.getElementById(panelId);
     if (!panel) return;
 
+    const setExpandedHeight = () => {
+      panel.style.maxHeight = `${panel.scrollHeight}px`;
+    };
+
     const syncPanelState = () => {
       const expanded = trigger.getAttribute("aria-expanded") === "true";
       panel.classList.remove("panel-hidden");
       panel.classList.toggle("is-open", expanded);
-      panel.style.maxHeight = expanded ? `${panel.scrollHeight}px` : "0px";
+      panel.style.maxHeight = expanded ? "none" : "0px";
     };
 
     syncPanelState();
@@ -149,10 +153,16 @@ function setupAccordion() {
       panel.classList.toggle("is-open", nextExpanded);
 
       if (nextExpanded) {
-        panel.style.maxHeight = `${panel.scrollHeight}px`;
+        setExpandedHeight();
+        requestAnimationFrame(() => {
+          setExpandedHeight();
+        });
         return;
       }
 
+      if (panel.style.maxHeight === "none") {
+        setExpandedHeight();
+      }
       panel.style.maxHeight = `${panel.scrollHeight}px`;
       if (reduced) {
         panel.style.maxHeight = "0px";
@@ -163,11 +173,30 @@ function setupAccordion() {
       }
     });
 
-    window.addEventListener("resize", () => {
-      if (trigger.getAttribute("aria-expanded") === "true") {
-        panel.style.maxHeight = `${panel.scrollHeight}px`;
+    panel.addEventListener("transitionend", (event) => {
+      if (event.propertyName !== "max-height") return;
+      const expanded = trigger.getAttribute("aria-expanded") === "true";
+      if (expanded) {
+        panel.style.maxHeight = "none";
       }
     });
+
+    window.addEventListener("resize", () => {
+      if (trigger.getAttribute("aria-expanded") === "true") {
+        panel.style.maxHeight = "none";
+      }
+    });
+
+    if (document.fonts && typeof document.fonts.ready?.then === "function") {
+      document.fonts.ready.then(() => {
+        if (trigger.getAttribute("aria-expanded") === "true") {
+          panel.style.maxHeight = "none";
+        }
+      }).catch(() => {
+        // Ignore font loading errors; accordion still works.
+      }
+      );
+    }
   });
 }
 
