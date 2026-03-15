@@ -442,6 +442,12 @@ input:focus-visible,textarea:focus-visible,select:focus-visible,
   padding:.9rem 1rem;border:1px solid var(--rule);
   background:var(--white);box-shadow:none;
 }
+.accordion-item > .accordion-trigger {
+  list-style:none;
+}
+.accordion-item > .accordion-trigger::-webkit-details-marker {
+  display:none;
+}
 .accordion-trigger {
   width:100%;display:flex;justify-content:space-between;
   align-items:center;gap:1.2rem;border:0;
@@ -456,6 +462,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible,
 }
 .accordion-trigger:hover::after { color:var(--ink) }
 .accordion-trigger[aria-expanded="true"]::after { transform:rotate(45deg);color:var(--blue) }
+.accordion-item[open] > .accordion-trigger::after { transform:rotate(45deg);color:var(--blue) }
 
 .accordion-panel {
   max-height:none;
@@ -466,6 +473,8 @@ input:focus-visible,textarea:focus-visible,select:focus-visible,
 }
 .accordion-panel.is-open { opacity:1;padding-top:.6rem }
 .panel-hidden { display:none }
+.accordion-item .accordion-panel { display:none }
+.accordion-item[open] .accordion-panel { display:block }
 
 
 /* ═══ FORMS ═══ */
@@ -644,7 +653,7 @@ textarea { min-height:6rem;resize:vertical }
 
 /* ═══ COOKIE ═══ */
 .cookie-banner {
-  position:fixed;left:1rem;right:1rem;bottom:1rem;z-index:300;
+  position:fixed;left:1rem;right:1rem;top:auto!important;bottom:1rem;z-index:300;
   max-width:860px;margin-inline:auto;
   display:grid;gap:.55rem;
   border:1px solid var(--rule);

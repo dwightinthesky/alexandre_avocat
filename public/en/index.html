@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Old+Mincho:wght@500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../assets/styles.css" />
+    <link rel="stylesheet" href="../assets/styles.css?v=20260315-fix2" />
   </head>
   <body>
     <a class="skip-link sr-only-focusable" href="#content">Skip to content</a>
@@ -163,48 +163,20 @@
           <h2>Frequently asked questions</h2>
         </div>
         <div class="accordion">
-          <article class="accordion-item">
-            <button
-              class="accordion-trigger"
-              type="button"
-              data-accordion-trigger
-              aria-expanded="false"
-              aria-controls="faq-1"
-            >
-              Do you offer online consultations?
-            </button>
-            <div class="accordion-panel panel-hidden" id="faq-1">
-              Yes. You can book either a video consultation or an in-office meeting.
-            </div>
-          </article>
-          <article class="accordion-item">
-            <button
-              class="accordion-trigger"
-              type="button"
-              data-accordion-trigger
-              aria-expanded="false"
-              aria-controls="faq-2"
-            >
-              What happens after booking?
-            </button>
-            <div class="accordion-panel panel-hidden" id="faq-2">
+          <details class="accordion-item" data-accordion-item>
+            <summary class="accordion-trigger">Do you offer online consultations?</summary>
+            <div class="accordion-panel">Yes. You can book either a video consultation or an in-office meeting.</div>
+          </details>
+          <details class="accordion-item" data-accordion-item>
+            <summary class="accordion-trigger">What happens after booking?</summary>
+            <div class="accordion-panel">
               You receive immediate confirmation with all details needed to prepare the consultation.
             </div>
-          </article>
-          <article class="accordion-item">
-            <button
-              class="accordion-trigger"
-              type="button"
-              data-accordion-trigger
-              aria-expanded="false"
-              aria-controls="faq-3"
-            >
-              Can I reschedule after confirmation?
-            </button>
-            <div class="accordion-panel panel-hidden" id="faq-3">
-              Yes. Reply to the confirmation email to request a new slot.
-            </div>
-          </article>
+          </details>
+          <details class="accordion-item" data-accordion-item>
+            <summary class="accordion-trigger">Can I reschedule after confirmation?</summary>
+            <div class="accordion-panel">Yes. Reply to the confirmation email to request a new slot.</div>
+          </details>
         </div>
       </section>
 
@@ -238,12 +210,26 @@
         default.
       </p>
       <div class="cookie-actions">
-        <button class="btn btn-primary magnetic" type="button" data-cookie-choice="accept">Accept</button>
-        <button class="btn btn-ghost magnetic" type="button" data-cookie-choice="reject">Reject</button>
+        <button
+          class="btn btn-primary magnetic"
+          type="button"
+          data-cookie-choice="accept"
+          onclick="try{localStorage.setItem('aa_cookie_consent','accept')}catch(e){};this.closest('#cookie-banner').hidden=true;"
+        >
+          Accept
+        </button>
+        <button
+          class="btn btn-ghost magnetic"
+          type="button"
+          data-cookie-choice="reject"
+          onclick="try{localStorage.setItem('aa_cookie_consent','reject')}catch(e){};this.closest('#cookie-banner').hidden=true;"
+        >
+          Reject
+        </button>
         <a class="cookie-link" href="politique-confidentialite.html">Learn more</a>
       </div>
     </div>
 
-    <script src="../assets/script.js"></script>
+    <script src="../assets/script.js?v=20260315-fix2"></script>
   </body>
 </html>

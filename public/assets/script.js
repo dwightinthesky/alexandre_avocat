@@ -851,17 +851,25 @@ function setupBookingWidgets() {
   });
 }
 
+function runSafeSetup(name, fn) {
+  try {
+    fn();
+  } catch (error) {
+    console.error(`[setup] ${name} failed`, error);
+  }
+}
+
 window.addEventListener("DOMContentLoaded", () => {
-  setupCookieBanner();
-  setupMobileMenu();
-  setupRevealAnimation();
-  setupScrollProgress();
-  setupMagneticButtons();
-  setupServiceCards();
-  setupAccordion();
-  setupScrambleText();
-  setupMetricCounters();
-  setupValueSwitcher();
-  setupQuickRail();
-  setupBookingWidgets();
+  runSafeSetup("cookie", setupCookieBanner);
+  runSafeSetup("menu", setupMobileMenu);
+  runSafeSetup("reveal", setupRevealAnimation);
+  runSafeSetup("scroll", setupScrollProgress);
+  runSafeSetup("magnetic", setupMagneticButtons);
+  runSafeSetup("services", setupServiceCards);
+  runSafeSetup("accordion", setupAccordion);
+  runSafeSetup("scramble", setupScrambleText);
+  runSafeSetup("metrics", setupMetricCounters);
+  runSafeSetup("switcher", setupValueSwitcher);
+  runSafeSetup("quickrail", setupQuickRail);
+  runSafeSetup("booking", setupBookingWidgets);
 });

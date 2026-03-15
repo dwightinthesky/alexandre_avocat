@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Old+Mincho:wght@500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="stylesheet" href="assets/styles.css?v=20260315-fix2" />
   </head>
   <body>
     <a class="skip-link sr-only-focusable" href="#content">Aller au contenu</a>
@@ -166,48 +166,24 @@
           <h2>Questions fréquentes</h2>
         </div>
         <div class="accordion">
-          <article class="accordion-item">
-            <button
-              class="accordion-trigger"
-              type="button"
-              data-accordion-trigger
-              aria-expanded="false"
-              aria-controls="faq-1"
-            >
-              Le cabinet propose-t-il des consultations en ligne ?
-            </button>
-            <div class="accordion-panel panel-hidden" id="faq-1">
+          <details class="accordion-item" data-accordion-item>
+            <summary class="accordion-trigger">Le cabinet propose-t-il des consultations en ligne ?</summary>
+            <div class="accordion-panel">
               Oui. Vous pouvez réserver une consultation en visioconférence ou au cabinet selon votre préférence.
             </div>
-          </article>
-          <article class="accordion-item">
-            <button
-              class="accordion-trigger"
-              type="button"
-              data-accordion-trigger
-              aria-expanded="false"
-              aria-controls="faq-2"
-            >
-              Que se passe-t-il après la réservation ?
-            </button>
-            <div class="accordion-panel panel-hidden" id="faq-2">
+          </details>
+          <details class="accordion-item" data-accordion-item>
+            <summary class="accordion-trigger">Que se passe-t-il après la réservation ?</summary>
+            <div class="accordion-panel">
               Vous recevez une confirmation immédiate avec les informations utiles pour préparer l'échange.
             </div>
-          </article>
-          <article class="accordion-item">
-            <button
-              class="accordion-trigger"
-              type="button"
-              data-accordion-trigger
-              aria-expanded="false"
-              aria-controls="faq-3"
-            >
-              Peut-on modifier un rendez-vous confirmé ?
-            </button>
-            <div class="accordion-panel panel-hidden" id="faq-3">
+          </details>
+          <details class="accordion-item" data-accordion-item>
+            <summary class="accordion-trigger">Peut-on modifier un rendez-vous confirmé ?</summary>
+            <div class="accordion-panel">
               Oui. Répondez à l'email de confirmation pour demander un changement de créneau.
             </div>
-          </article>
+          </details>
         </div>
       </section>
 
@@ -241,12 +217,26 @@
         essentiel n'est actif par défaut.
       </p>
       <div class="cookie-actions">
-        <button class="btn btn-primary magnetic" type="button" data-cookie-choice="accept">Accepter</button>
-        <button class="btn btn-ghost magnetic" type="button" data-cookie-choice="reject">Refuser</button>
+        <button
+          class="btn btn-primary magnetic"
+          type="button"
+          data-cookie-choice="accept"
+          onclick="try{localStorage.setItem('aa_cookie_consent','accept')}catch(e){};this.closest('#cookie-banner').hidden=true;"
+        >
+          Accepter
+        </button>
+        <button
+          class="btn btn-ghost magnetic"
+          type="button"
+          data-cookie-choice="reject"
+          onclick="try{localStorage.setItem('aa_cookie_consent','reject')}catch(e){};this.closest('#cookie-banner').hidden=true;"
+        >
+          Refuser
+        </button>
         <a class="cookie-link" href="politique-confidentialite.html">En savoir plus</a>
       </div>
     </div>
 
-    <script src="assets/script.js"></script>
+    <script src="assets/script.js?v=20260315-fix2"></script>
   </body>
 </html>
