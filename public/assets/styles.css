@@ -1877,3 +1877,270 @@ body {
     justify-content: flex-start;
   }
 }
+
+/* ===================================================================
+   HOME V2 — Japanese Minimal, editorial rhythm, low-noise interaction
+   =================================================================== */
+
+.zen-hero {
+  padding: clamp(3.6rem, 8vw, 8rem) 0 clamp(2.6rem, 5vw, 4.6rem);
+  border-bottom: 1px solid var(--rule);
+}
+
+.zen-kicker {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.zen-hero-title {
+  margin: 0;
+  max-width: 13ch;
+  color: var(--black);
+  font-family: var(--serif);
+  font-size: clamp(2.3rem, 5.8vw, 5rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.zen-lead {
+  margin: 1.4rem 0 0;
+  max-width: 58ch;
+  color: var(--ink);
+  font-size: clamp(1rem, 1.55vw, 1.2rem);
+  line-height: 1.88;
+}
+
+.zen-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.zen-meta {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.zen-meta span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.1rem;
+  padding: 0.35rem 0.78rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: rgba(252, 251, 247, 0.72);
+  color: var(--ink);
+  font-size: 0.74rem;
+  font-weight: 500;
+}
+
+.zen-section-head {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 1.4rem;
+}
+
+.zen-section-head .eyebrow {
+  margin-bottom: 0;
+}
+
+.zen-section-head h2 {
+  margin: 0;
+  max-width: 19ch;
+  font-size: clamp(1.7rem, 4.2vw, 3.9rem);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+
+.zen-manifesto .zen-lines {
+  border-top: 1px solid var(--rule);
+}
+
+.zen-lines article {
+  display: grid;
+  grid-template-columns: 4.2rem minmax(0, 1fr);
+  gap: 0.6rem 1.2rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.line-index {
+  color: var(--blue-quiet);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.zen-lines h3 {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 1.02rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.zen-lines p {
+  margin: 0.3rem 0 0;
+  color: var(--body);
+}
+
+.zen-domaines-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.95rem;
+}
+
+.zen-domaines-grid article {
+  padding: 1.15rem 1.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: var(--white);
+}
+
+.zen-domaines-grid h3 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.28rem, 2vw, 1.76rem);
+  line-height: 1.35;
+}
+
+.zen-domaines-grid p {
+  margin: 0.65rem 0 0;
+}
+
+.zen-process-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.zen-process-list li {
+  display: grid;
+  grid-template-columns: 4.2rem minmax(0, 1fr);
+  gap: 1.1rem;
+  align-items: start;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.zen-process-list li > span {
+  color: var(--blue-quiet);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.zen-process-list p {
+  margin: 0;
+}
+
+.zen-booking-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 1.2rem;
+  align-items: end;
+  padding: clamp(1.2rem, 2.8vw, 2rem);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  background: var(--white);
+}
+
+.zen-booking-panel h2 {
+  margin: 0.1rem 0 0.6rem;
+}
+
+.zen-booking-panel p {
+  margin: 0;
+  max-width: 58ch;
+}
+
+.zen-booking-panel .zen-actions {
+  margin-top: 0;
+  justify-content: flex-end;
+}
+
+.zen-faq .accordion {
+  max-width: 960px;
+}
+
+.zen-contact-row {
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.zen-contact-row h2 {
+  margin: 0 0 0.5rem;
+}
+
+.zen-contact-row p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.03rem;
+}
+
+.zen-contact-row .zen-actions {
+  margin-top: 0;
+}
+
+@media (max-width: 980px) {
+  .zen-hero-title {
+    max-width: 100%;
+  }
+
+  .zen-domaines-grid,
+  .zen-booking-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .zen-booking-panel .zen-actions {
+    justify-content: flex-start;
+    margin-top: 0.45rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .zen-hero {
+    padding-top: 2.8rem;
+  }
+
+  .zen-hero-title {
+    font-size: clamp(1.95rem, 9.4vw, 2.9rem);
+    line-height: 1.26;
+  }
+
+  .zen-lead {
+    font-size: 0.98rem;
+  }
+
+  .zen-section-head h2 {
+    font-size: clamp(1.45rem, 7vw, 2.05rem);
+  }
+
+  .zen-lines article,
+  .zen-process-list li {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  .zen-actions {
+    width: 100%;
+  }
+
+  .zen-actions .btn {
+    width: 100%;
+  }
+}
