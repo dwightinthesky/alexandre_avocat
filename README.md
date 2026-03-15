@@ -25,17 +25,17 @@ npx wrangler pages dev public
 
 ## Pages project
 
-- Production URL: `https://alexandre-avocat.pages.dev`
-- Preview URL format: `https://<hash>.alexandre-avocat.pages.dev`
+- Production URL: `https://alexandre-martinez-avocat.pages.dev`
+- Preview URL format: `https://<hash>.alexandre-martinez-avocat.pages.dev`
 
 ## Required secrets (Pages)
 
 Set on your Pages project:
 
 ```bash
-npx wrangler pages secret put SCHEDULE_ADMIN_USERNAME --project-name alexandre-avocat
-npx wrangler pages secret put SCHEDULE_ADMIN_PASSWORD --project-name alexandre-avocat
-npx wrangler pages secret put SCHEDULE_AUTH_SECRET --project-name alexandre-avocat
+npx wrangler pages secret put SCHEDULE_ADMIN_USERNAME --project-name alexandre-martinez-avocat
+npx wrangler pages secret put SCHEDULE_ADMIN_PASSWORD --project-name alexandre-martinez-avocat
+npx wrangler pages secret put SCHEDULE_AUTH_SECRET --project-name alexandre-martinez-avocat
 ```
 
 Optional environment vars:
@@ -46,7 +46,7 @@ Optional environment vars:
 ## Deploy
 
 ```bash
-npx wrangler pages deploy public --project-name alexandre-avocat
+npx wrangler pages deploy public --project-name alexandre-martinez-avocat
 ```
 
 ## API routes
