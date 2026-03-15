@@ -1,21 +1,12 @@
-name = "alexandre-avocat"
-main = "src/worker.js"
+name = "alexandre-avocat-pages"
 compatibility_date = "2026-03-15"
-
-assets = { directory = "./public", binding = "ASSETS", run_worker_first = true }
+pages_build_output_dir = "public"
 
 [vars]
-# Optional: default Outlook ICS feed used by admin sync.
 OUTLOOK_ICS_URL = ""
-# Optional: allow http:// ICS URLs in non-production debugging only.
 ALLOW_INSECURE_ICS = "0"
 
-# Required in Cloudflare dashboard or via `wrangler secret put`:
+# Required secrets (Pages project):
 # - SCHEDULE_ADMIN_USERNAME
 # - SCHEDULE_ADMIN_PASSWORD
 # - SCHEDULE_AUTH_SECRET
-
-# Optional persistence (recommended):
-# [[kv_namespaces]]
-# binding = "SCHEDULE_KV"
-# id = "your_kv_namespace_id"
