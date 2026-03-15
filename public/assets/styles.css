@@ -2144,3 +2144,110 @@ body {
     width: 100%;
   }
 }
+
+/* ===================================================================
+   UX HOTFIX (2026-03-15)
+   Fix unclickable/awkward cookie banner and reduce accidental overlap.
+   =================================================================== */
+
+.scroll-progress {
+  pointer-events: none;
+}
+
+.cookie-banner {
+  position: fixed !important;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 1000;
+  max-width: 920px;
+  margin-inline: auto;
+  display: grid;
+  gap: 0.8rem;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: var(--white);
+  color: var(--ink);
+  padding: 0.95rem 1rem;
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.12);
+}
+
+.cookie-banner,
+.cookie-banner * {
+  pointer-events: auto;
+}
+
+.cookie-banner p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.cookie-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.cookie-actions .btn {
+  width: auto !important;
+  min-height: 2.3rem;
+  padding: 0.52rem 1rem;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: none;
+}
+
+.cookie-actions .btn-primary {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: var(--white);
+}
+
+.cookie-actions .btn-primary:hover {
+  border-color: var(--blue-quiet);
+  background: var(--blue-quiet);
+}
+
+.cookie-actions .btn-ghost {
+  border-color: var(--rule);
+  color: var(--ink);
+}
+
+.cookie-actions .btn-ghost:hover {
+  border-color: var(--faint);
+  background: var(--wash);
+}
+
+.cookie-link {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+  font-size: 0.84rem;
+  padding-bottom: 0.08rem;
+}
+
+@media (max-width: 720px) {
+  .cookie-banner {
+    left: 0.6rem;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    border-radius: 12px;
+    padding: 0.85rem;
+  }
+
+  .cookie-actions .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .cookie-link {
+    width: auto;
+  }
+}

@@ -81,6 +81,8 @@ function setupScrollProgress() {
 }
 
 function setupMagneticButtons() {
+  if (!document.body.hasAttribute("data-magnetic")) return;
+
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduced) return;
 
