@@ -1,4 +1,4 @@
-const { DAY_RE, normalizeSlotList, normalizeOutlookIcsUrl } = require("./schedule-store");
+import { DAY_RE, normalizeOutlookIcsUrl, normalizeSlotList } from "./schedule-store.js";
 
 const formatters = new Map();
 
@@ -85,11 +85,7 @@ function parseProperty(line) {
     params[key] = v;
   });
 
-  return {
-    name: name.toUpperCase(),
-    value,
-    params
-  };
+  return { name: name.toUpperCase(), value, params };
 }
 
 function parseIcsDateValue(value, params, fallbackTimeZone) {
@@ -119,10 +115,8 @@ function parseIcsDateValue(value, params, fallbackTimeZone) {
   }
 
   const tzid = String(params.TZID || params["X-LIC-LOCATION"] || fallbackTimeZone || "Europe/Paris").trim();
-  const zone = tzid || fallbackTimeZone;
-
   return {
-    date: zonedLocalToDate(Number(y), Number(m), Number(d), Number(hh), Number(mm), second, zone),
+    date: zonedLocalToDate(Number(y), Number(m), Number(d), Number(hh), Number(mm), second, tzid || fallbackTimeZone),
     dateOnly: false
   };
 }
@@ -202,9 +196,7 @@ async function fetchICS(icsUrl, timeoutMs) {
   try {
     const response = await fetch(icsUrl, {
       method: "GET",
-      headers: {
-        Accept: "text/calendar, text/plain;q=0.9, */*;q=0.8"
-      },
+      headers: { Accept: "text/calendar, text/plain;q=0.9, */*;q=0.8" },
       signal: controller.signal
     });
 
@@ -218,11 +210,9 @@ async function fetchICS(icsUrl, timeoutMs) {
   }
 }
 
-async function syncOutlookWithSchedule(schedule, providedUrl) {
-  const sourceUrl = normalizeOutlookIcsUrl(providedUrl || schedule.outlookIcsUrl || process.env.OUTLOOK_ICS_URL);
-  if (!sourceUrl) {
-    throw new Error("missing_ics_url");
-  }
+export async function syncOutlookWithSchedule(schedule, providedUrl, env) {
+  const sourceUrl = normalizeOutlookIcsUrl(providedUrl || schedule.outlookIcsUrl || env.OUTLOOK_ICS_URL, env);
+  if (!sourceUrl) throw new Error("missing_ics_url");
 
   const icsText = await fetchICS(sourceUrl, 12000);
   const events = parseIcsEvents(icsText, schedule.timezone || "Europe/Paris");
@@ -236,9 +226,7 @@ async function syncOutlookWithSchedule(schedule, providedUrl) {
     const normalizedSlots = normalizeSlotList(slots);
     const kept = normalizedSlots.filter((slot) => {
       const slotStart = parseDateAndTimeToZonedDate(dateKey, slot, schedule.timezone || "Europe/Paris");
-      if (!(slotStart instanceof Date) || Number.isNaN(slotStart.getTime())) {
-        return false;
-      }
+      if (!(slotStart instanceof Date) || Number.isNaN(slotStart.getTime())) return false;
 
       const slotEnd = new Date(slotStart.getTime() + (schedule.slotDurationMinutes || 60) * 60 * 1000);
       const overlaps = events.some((event) => event.start < slotEnd && event.end > slotStart);
@@ -259,8 +247,3 @@ async function syncOutlookWithSchedule(schedule, providedUrl) {
     days: nextDays
   };
 }
-
-module.exports = {
-  parseIcsEvents,
-  syncOutlookWithSchedule
-};

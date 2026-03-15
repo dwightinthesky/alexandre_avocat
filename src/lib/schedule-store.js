@@ -11,9 +11,7 @@ function buildSlotUniverse() {
   const slots = [];
   for (let hour = 8; hour <= 20; hour += 1) {
     slots.push(`${String(hour).padStart(2, "0")}:00`);
-    if (hour < 20) {
-      slots.push(`${String(hour).padStart(2, "0")}:30`);
-    }
+    if (hour < 20) slots.push(`${String(hour).padStart(2, "0")}:30`);
   }
   return slots;
 }
@@ -41,7 +39,7 @@ function sortSlots(slots) {
   return [...slots].sort((a, b) => a.localeCompare(b));
 }
 
-function normalizeSlotList(slots) {
+export function normalizeSlotList(slots) {
   if (!Array.isArray(slots)) return [];
   const unique = new Set();
 
@@ -77,16 +75,10 @@ function normalizeRule(rule) {
     return null;
   }
 
-  return {
-    id,
-    days,
-    startTime,
-    endTime,
-    type
-  };
+  return { id, days, startTime, endTime, type };
 }
 
-function normalizeRules(rules) {
+export function normalizeRules(rules) {
   if (!Array.isArray(rules)) return [];
 
   const normalized = [];
@@ -104,7 +96,11 @@ function normalizeRules(rules) {
   return normalized;
 }
 
-function normalizeOutlookIcsUrl(value) {
+function shouldAllowInsecureIcs(env) {
+  return String(env.ALLOW_INSECURE_ICS || "") === "1";
+}
+
+export function normalizeOutlookIcsUrl(value, env) {
   let raw = String(value || "").trim();
   if (!raw) return "";
 
@@ -114,9 +110,12 @@ function normalizeOutlookIcsUrl(value) {
 
   try {
     const url = new URL(raw);
-    const isProd = process.env.NODE_ENV === "production";
-    if (isProd && url.protocol !== "https:") return "";
-    if (url.protocol !== "https:" && url.protocol !== "http:") return "";
+    const allowInsecure = shouldAllowInsecureIcs(env);
+    if (allowInsecure) {
+      if (url.protocol !== "http:" && url.protocol !== "https:") return "";
+    } else if (url.protocol !== "https:") {
+      return "";
+    }
     return url.toString();
   } catch (error) {
     return "";
@@ -169,11 +168,9 @@ function slotsForRule(rule) {
   return SLOT_UNIVERSE.filter((slot) => slot >= rule.startTime && slot < rule.endTime);
 }
 
-function applyRulesToDays(days, rules) {
+export function applyRulesToDays(days, rules) {
   const normalizedRules = normalizeRules(rules);
-  if (!normalizedRules.length) {
-    return clone(days);
-  }
+  if (!normalizedRules.length) return clone(days);
 
   const nextDays = {};
   Object.entries(days || {}).forEach(([dateKey, slots]) => {
@@ -198,7 +195,7 @@ function applyRulesToDays(days, rules) {
   return nextDays;
 }
 
-function normalizeSchedule(raw) {
+export function normalizeSchedule(raw, env) {
   const safe = raw && typeof raw === "object" ? raw : {};
   const sourceDays = safe.days && typeof safe.days === "object" ? safe.days : {};
   const normalizedDays = {};
@@ -210,75 +207,53 @@ function normalizeSchedule(raw) {
 
   const hasDays = Object.keys(normalizedDays).length > 0;
   const rules = normalizeRules(safe.rules);
-  const mergedOutlookUrl = safe.outlookIcsUrl !== undefined ? safe.outlookIcsUrl : process.env.OUTLOOK_ICS_URL;
+  const mergedOutlookUrl = safe.outlookIcsUrl !== undefined ? safe.outlookIcsUrl : env.OUTLOOK_ICS_URL;
 
   return {
     version: 2,
     timezone: "Europe/Paris",
     slotDurationMinutes: 60,
-    outlookIcsUrl: normalizeOutlookIcsUrl(mergedOutlookUrl),
+    outlookIcsUrl: normalizeOutlookIcsUrl(mergedOutlookUrl, env),
     rules,
     days: ensureHorizon(hasDays ? normalizedDays : buildDefaultDays())
   };
 }
 
-function hasKV() {
-  return Boolean(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
+function hasKV(env) {
+  return Boolean(env.SCHEDULE_KV && typeof env.SCHEDULE_KV.get === "function" && typeof env.SCHEDULE_KV.put === "function");
 }
 
-async function runKVPipeline(commands) {
-  const response = await fetch(`${process.env.KV_REST_API_URL}/pipeline`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(commands)
-  });
-
-  if (!response.ok) {
-    throw new Error(`kv_http_${response.status}`);
-  }
-
-  const payload = await response.json();
-  return Array.isArray(payload) ? payload : [];
-}
-
-async function readScheduleFromKV() {
-  if (!hasKV()) return null;
+async function readScheduleFromKV(env) {
+  if (!hasKV(env)) return null;
 
   try {
-    const [result] = await runKVPipeline([["GET", SCHEDULE_KEY]]);
-    if (!result || result.result == null) return null;
-
-    if (typeof result.result === "string") {
-      return JSON.parse(result.result);
-    }
-
-    return result.result;
+    const value = await env.SCHEDULE_KV.get(SCHEDULE_KEY, { type: "json" });
+    return value && typeof value === "object" ? value : null;
   } catch (error) {
     return null;
   }
 }
 
-async function writeScheduleToKV(schedule) {
-  if (!hasKV()) return false;
-
+async function writeScheduleToKV(env, schedule) {
+  if (!hasKV(env)) return false;
   try {
-    await runKVPipeline([["SET", SCHEDULE_KEY, JSON.stringify(schedule)]]);
+    await env.SCHEDULE_KV.put(SCHEDULE_KEY, JSON.stringify(schedule));
     return true;
   } catch (error) {
     return false;
   }
 }
 
-function getMemorySchedule() {
+function getMemorySchedule(env) {
   if (!globalThis[MEMORY_KEY]) {
-    globalThis[MEMORY_KEY] = normalizeSchedule({
-      days: buildDefaultDays(),
-      rules: [],
-      outlookIcsUrl: process.env.OUTLOOK_ICS_URL || ""
-    });
+    globalThis[MEMORY_KEY] = normalizeSchedule(
+      {
+        days: buildDefaultDays(),
+        rules: [],
+        outlookIcsUrl: env.OUTLOOK_ICS_URL || ""
+      },
+      env
+    );
   }
 
   return globalThis[MEMORY_KEY];
@@ -288,21 +263,21 @@ function setMemorySchedule(schedule) {
   globalThis[MEMORY_KEY] = schedule;
 }
 
-async function readSchedule() {
-  const fromKV = await readScheduleFromKV();
-  const source = fromKV || getMemorySchedule();
-  const normalized = normalizeSchedule(source);
+export async function readSchedule(env) {
+  const fromKV = await readScheduleFromKV(env);
+  const source = fromKV || getMemorySchedule(env);
+  const normalized = normalizeSchedule(source, env);
   setMemorySchedule(normalized);
 
-  if (!fromKV && hasKV()) {
-    await writeScheduleToKV(normalized);
+  if (!fromKV && hasKV(env)) {
+    await writeScheduleToKV(env, normalized);
   }
 
   return clone(normalized);
 }
 
-async function writeSchedule(raw) {
-  const current = await readSchedule();
+export async function writeSchedule(env, raw) {
+  const current = await readSchedule(env);
   const safe = raw && typeof raw === "object" ? raw : {};
 
   const merged = {
@@ -313,39 +288,26 @@ async function writeSchedule(raw) {
     outlookIcsUrl: safe.outlookIcsUrl !== undefined ? safe.outlookIcsUrl : current.outlookIcsUrl
   };
 
-  const normalized = normalizeSchedule(merged);
+  const normalized = normalizeSchedule(merged, env);
   setMemorySchedule(normalized);
-  await writeScheduleToKV(normalized);
+  await writeScheduleToKV(env, normalized);
   return clone(normalized);
 }
 
-async function reserveSlot(dateKey, time) {
+export async function reserveSlot(env, dateKey, time) {
   if (!DAY_RE.test(String(dateKey || "")) || !TIME_RE.test(String(time || ""))) {
-    return { ok: false, reason: "invalid_input", schedule: await readSchedule() };
+    return { ok: false, reason: "invalid_input", schedule: await readSchedule(env) };
   }
 
-  const current = await readSchedule();
+  const current = await readSchedule(env);
   const slots = normalizeSlotList(current.days[dateKey] || []);
   if (!slots.includes(time)) {
     return { ok: false, reason: "slot_unavailable", schedule: current };
   }
 
   current.days[dateKey] = slots.filter((slot) => slot !== time);
-  const saved = await writeSchedule(current);
+  const saved = await writeSchedule(env, current);
   return { ok: true, schedule: saved };
 }
 
-module.exports = {
-  DAY_RE,
-  TIME_RE,
-  RULE_DAY_VALUES,
-  SLOT_UNIVERSE,
-  normalizeSlotList,
-  normalizeRules,
-  normalizeOutlookIcsUrl,
-  applyRulesToDays,
-  normalizeSchedule,
-  readSchedule,
-  writeSchedule,
-  reserveSlot
-};
+export { DAY_RE, TIME_RE, RULE_DAY_VALUES, SLOT_UNIVERSE };

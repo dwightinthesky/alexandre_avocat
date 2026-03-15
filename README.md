@@ -1,62 +1,83 @@
-# Alexandre Avocat - Site Vitrine
+# Alexandre Avocat - Cloudflare Edition
 
-Fast-loading website for a Paris law office, with a protected schedule admin panel.
+Static bilingual (FR/EN) law-office site with a protected admin schedule panel and booking APIs, deployed on **Cloudflare Workers + Assets**.
 
-## Pages
+## Structure
 
-- `index.html` (Accueil)
-- `domaines.html` (Domaines d'intervention)
-- `methode.html` (Méthode)
-- `rendez-vous.html` (Prendre Rendez-vous)
-- `admin-schedule.html` (édition sécurisée des disponibilités)
-- `mentions-legales.html` (Mentions légales + médiateur)
-- `politique-confidentialite.html` (RGPD)
+- `public/` static pages and assets
+- `src/worker.js` Cloudflare Worker router + API handlers
+- `src/lib/*` auth, schedule store, Outlook ICS sync helpers
+- `wrangler.toml` Cloudflare deploy config
 
 ## Local preview
 
 ```bash
-python3 -m http.server 4173
+# Static-only preview
+python3 -m http.server 4173 -d public
 ```
 
 Open: `http://127.0.0.1:4173/index.html`
 
-Note: the Python server is only for static preview (no `/api` routes).  
-Use Vercel (`vercel dev` or deployed project) to test login + schedule APIs.
+To test APIs locally with Worker runtime:
 
-## Admin auth & schedule API
+```bash
+npx wrangler dev
+```
 
-Set these environment variables in Vercel Project Settings:
+## Required secrets (Cloudflare)
 
-- `SCHEDULE_ADMIN_USERNAME`
-- `SCHEDULE_ADMIN_PASSWORD`
-- `SCHEDULE_AUTH_SECRET` (long random secret for cookie signing)
+Set these before deploy:
 
-Optional (recommended for persistence across deployments/instances):
+```bash
+npx wrangler secret put SCHEDULE_ADMIN_USERNAME
+npx wrangler secret put SCHEDULE_ADMIN_PASSWORD
+npx wrangler secret put SCHEDULE_AUTH_SECRET
+```
 
-- `KV_REST_API_URL`
-- `KV_REST_API_TOKEN`
+Optional vars:
 
-Without KV variables, schedule data falls back to memory and can reset.
+- `OUTLOOK_ICS_URL` default Outlook ICS source
+- `ALLOW_INSECURE_ICS=1` only for non-production HTTP ICS debugging
 
-Optional (Outlook sync default source):
+## Optional persistence (recommended)
 
-- `OUTLOOK_ICS_URL` (public/private Outlook ICS URL, can also be set from admin page)
+Create and bind a KV namespace so schedule data survives worker restarts:
 
-Admin page capabilities:
+```bash
+npx wrangler kv namespace create SCHEDULE_KV
+```
 
-- Manual slot editing
-- Outlook ICS sync (`/api/admin/outlook-sync`)
-- Recurring availability rules (`/api/admin/apply-rules`)
+Then add to `wrangler.toml`:
 
-## Notes before production
+```toml
+[[kv_namespaces]]
+binding = "SCHEDULE_KV"
+id = "<your-namespace-id>"
+```
 
-- Replace hosting provider placeholders in `mentions-legales.html`.
+Without KV, schedule data uses in-memory fallback and can reset.
 
-## Deploy to Vercel
+## Deploy to Cloudflare
 
-This repository uses static pages + Vercel Serverless Functions (`/api`).
+```bash
+npx wrangler login
+npx wrangler deploy
+```
 
-Recommended Vercel project settings:
-- Framework Preset: `Other`
-- Build Command: empty
-- Output Directory: empty
+## Routes
+
+APIs served by Worker:
+
+- `GET /api/schedule`
+- `POST /api/schedule/book`
+- `GET /api/admin/session`
+- `POST /api/admin/login`
+- `POST /api/admin/logout`
+- `GET/PUT /api/admin/schedule`
+- `POST /api/admin/outlook-sync`
+- `POST /api/admin/apply-rules`
+
+Legacy redirects kept:
+
+- `/honoraires(.html)` -> `/methode`
+- `/en/honoraires(.html)` -> `/en/approach`
