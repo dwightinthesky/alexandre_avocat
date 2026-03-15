@@ -1059,3 +1059,516 @@ select { cursor: pointer; }
   .admin-date-list { grid-template-columns: 1fr; }
   .admin-slot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* ======================================================================
+   MUJI REFRAME (2026-03-15)
+   Goal: quieter typography, smaller headings, paper-like UI, less "cardy".
+   ====================================================================== */
+:root {
+  --blue: #0084bd;
+  --blue-quiet: #006f9f;
+  --blue-whisper: rgba(0, 132, 189, 0.08);
+  --blue-line: rgba(0, 132, 189, 0.22);
+
+  --black: #1f1d19;
+  --ink: #34302a;
+  --body: #59544b;
+  --muted: #7b756c;
+  --faint: #b9b3a8;
+  --rule: #ddd8cf;
+  --wash: #f1ede4;
+  --paper: #fbf8f2;
+  --white: #fffdf9;
+
+  --contain: min(1220px, 92vw);
+  --contain-narrow: min(900px, 92vw);
+
+  --sans: "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+  --serif: "Noto Serif", Georgia, serif;
+}
+
+body {
+  background: var(--paper);
+  color: var(--body);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.68;
+}
+
+.container { width: var(--contain); }
+
+.site-header {
+  background: rgba(251, 248, 242, 0.96);
+  backdrop-filter: blur(8px);
+}
+
+.nav-wrap {
+  min-height: 5rem;
+  gap: 1.2rem;
+}
+
+.brand-mark {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 0;
+  border-color: var(--faint);
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.brand-title {
+  font-size: 1.02rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.brand-sub {
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+}
+
+.nav-links {
+  gap: 0.2rem;
+}
+
+.nav-links a {
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0;
+}
+
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+  color: var(--black);
+  background: var(--wash);
+}
+
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4.2vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.015em;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.45rem, 2.8vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+}
+
+h3 {
+  font-family: var(--sans);
+  font-size: clamp(1.05rem, 1.65vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.36;
+  letter-spacing: 0.01em;
+}
+
+h4 {
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 64ch;
+  font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+  line-height: 1.72;
+  color: var(--ink);
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+}
+
+.page-main { padding: 2.4rem 0 6rem; }
+.section { margin-top: 3.4rem; }
+.section-head {
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.card,
+.solution-tile,
+.metric-card,
+.switch-panel,
+.calendar-card,
+.admin-rule-item {
+  border-radius: 0;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  box-shadow: none;
+}
+
+.card,
+.solution-tile,
+.switch-panel {
+  padding: 1.35rem;
+}
+
+.btn {
+  border-radius: 0;
+  border: 1px solid var(--black);
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  font-weight: 600;
+  padding: 0.62rem 1rem;
+  min-height: 2.5rem;
+}
+
+.btn-primary {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background: var(--blue-quiet);
+  border-color: var(--blue-quiet);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--rule);
+  color: var(--ink);
+}
+
+.btn-ghost:hover {
+  background: var(--wash);
+  border-color: var(--faint);
+}
+
+.hero {
+  padding: 2rem 0;
+}
+
+.hero-stage {
+  border: 1px solid var(--rule);
+  background: var(--white);
+  min-height: 0;
+}
+
+.hero-panel {
+  border-right: 1px solid var(--rule);
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+}
+
+.hero-home h1,
+.section-head h2 {
+  font-size: clamp(1.7rem, 3.2vw, 2.8rem);
+  line-height: 1.16;
+}
+
+.hero-mode-grid {
+  gap: 0.4rem;
+}
+
+.mode-chip {
+  border-radius: 0;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.76rem;
+}
+
+.mode-chip.is-active {
+  border-color: var(--blue-line);
+  background: var(--blue-whisper);
+  color: var(--blue-quiet);
+}
+
+.hero-searchbar {
+  border-radius: 0;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  padding: 0.65rem;
+}
+
+.hero-searchfield {
+  border-right: 1px solid var(--rule);
+}
+
+.hero-searchfield:last-child {
+  border-right: 0;
+}
+
+.hero-visual {
+  min-height: 320px;
+  background: linear-gradient(160deg, #f9f6ef 0%, #efe9dd 100%);
+}
+
+.hero-visual-frame {
+  border-radius: 0;
+  border: 1px solid var(--faint);
+}
+
+.hero-visual-note {
+  border-radius: 0;
+  border: 1px solid var(--rule);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+}
+
+.metric-wall {
+  gap: 0;
+  border: 1px solid var(--rule);
+  border-bottom: 0;
+}
+
+.metric-card {
+  border-left: 0;
+  border-top: 0;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 1rem 0.85rem;
+  text-align: left;
+}
+
+.metric-card:last-child { border-right: 0; }
+.metric-value {
+  font-family: var(--sans);
+  font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.metric-label {
+  font-size: 0.74rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.solution-grid,
+.trust-grid,
+.grid,
+.split,
+.booking-shell {
+  gap: 0.9rem;
+}
+
+.solution-kicker {
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+.solution-link {
+  border-bottom: 1px solid var(--faint);
+}
+
+.trust-chip {
+  border-radius: 0;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 0.8rem;
+  padding: 0.5rem 0.8rem;
+}
+
+.switch-controls {
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  background: var(--white);
+}
+
+.switch-btn {
+  border-radius: 0;
+  font-size: 0.82rem;
+}
+
+.switch-btn.is-active {
+  background: var(--wash);
+  color: var(--black);
+}
+
+.accordion-item {
+  border-radius: 0;
+  border: 1px solid var(--rule);
+  background: var(--white);
+}
+
+.accordion-trigger {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.accordion-panel {
+  color: var(--body);
+}
+
+input,
+select,
+textarea {
+  border-radius: 0;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.94rem;
+  line-height: 1.45;
+  padding: 0.62rem 0.68rem;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--blue-line);
+  box-shadow: 0 0 0 3px var(--blue-whisper);
+}
+
+.booking-slot,
+.admin-slot-btn,
+.admin-date-btn,
+.admin-day-chip {
+  border-radius: 0;
+}
+
+.booking-slot {
+  border: 1px solid var(--rule);
+  background: var(--white);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.booking-slot:hover,
+.booking-slot.is-selected {
+  border-color: var(--blue-line);
+  background: var(--blue-whisper);
+  color: var(--blue-quiet);
+}
+
+.booking-check {
+  border-radius: 0;
+  background: var(--blue-whisper);
+  color: var(--blue-quiet);
+  border: 1px solid var(--blue-line);
+}
+
+.calendar-card {
+  padding: 0.75rem;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.calendar-card:hover {
+  background: var(--wash);
+}
+
+.admin-layout {
+  border: 1px solid var(--rule);
+  background: var(--rule);
+}
+
+.admin-layout > * {
+  background: var(--white);
+}
+
+.admin-status {
+  font-size: 0.8rem;
+}
+
+.admin-status.is-success { color: #2f6b40; }
+.admin-status.is-error { color: #9f3a30; }
+
+.footer {
+  background: transparent;
+  border-top: 1px solid var(--rule);
+}
+
+.footer-wrap {
+  min-height: 4.8rem;
+  color: var(--muted);
+}
+
+.cookie-banner {
+  border-radius: 0;
+  border: 1px solid var(--rule);
+  background: #fffdf8;
+  color: var(--ink);
+  padding: 0.9rem;
+}
+
+.cookie-banner p { color: var(--ink); }
+.cookie-actions .btn-primary {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--white);
+}
+
+.cookie-actions .btn-ghost {
+  color: var(--ink);
+  border-color: var(--rule);
+}
+
+.cookie-link {
+  font-size: 0.78rem;
+  border-bottom: 1px solid var(--faint);
+}
+
+/* Tone down decorative effects for MUJI direction */
+.magnetic,
+.tilt-card,
+.tilt-card:hover,
+.hero-visual-frame,
+.hero-visual-note {
+  transform: none !important;
+}
+
+.magnetic {
+  --btn-x: 0px !important;
+  --btn-y: 0px !important;
+}
+
+@media (max-width: 980px) {
+  .hero-stage,
+  .split,
+  .grid-2,
+  .booking-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-panel {
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .hero-searchbar {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  h1,
+  .hero-home h1,
+  .section-head h2 {
+    font-size: clamp(1.45rem, 7.5vw, 2.05rem);
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: clamp(1.2rem, 5.4vw, 1.7rem);
+  }
+
+  .nav-links a,
+  .btn {
+    font-size: 0.78rem;
+  }
+
+  .metric-wall {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card {
+    border-right: 0;
+  }
+}
