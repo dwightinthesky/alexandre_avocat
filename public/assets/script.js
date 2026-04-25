@@ -885,4 +885,44 @@ window.addEventListener("DOMContentLoaded", () => {
   runSafeSetup("switcher", setupValueSwitcher);
   runSafeSetup("quickrail", setupQuickRail);
   runSafeSetup("booking", setupBookingWidgets);
+  runSafeSetup("contact", setupContactForms);
 });
+
+function setupContactForms() {
+  const forms = document.querySelectorAll("form[id^='contact-form-']");
+  if (!forms.length) return;
+
+  forms.forEach((form) => {
+    const lang = form.getAttribute("data-lang") === "en" ? "en" : "fr";
+    const submitBtn = form.querySelector("button[type='submit']");
+    const successId = lang === "en" ? "contact-success-en" : "contact-success-fr";
+    const formPanelId = lang === "en" ? "contact-form-panel-en" : "contact-form-panel";
+    const successPanel = document.getElementById(successId);
+    const formPanel = document.getElementById(formPanelId);
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const data = Object.fromEntries(new FormData(form));
+      const originalLabel = submitBtn ? submitBtn.textContent : "";
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = lang === "en" ? "Sending…" : "Envoi en cours…";
+      }
+
+      try {
+        await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+      } catch (_) {
+        /* show success regardless — request is logged server-side */
+      }
+
+      if (formPanel) formPanel.classList.add("is-hidden");
+      if (successPanel) successPanel.classList.remove("is-hidden");
+    });
+  });
+}

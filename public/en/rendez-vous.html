@@ -53,10 +53,10 @@
       <section class="hero page-intro" data-animate>
         <div class="hero-copy">
           <span class="eyebrow">Book Appointment</span>
-          <h1>Direct booking, immediate confirmation.</h1>
+          <h1>Ask your question. The office will get back to you.</h1>
           <p class="lead">
-            Select your slot online or in-office. Useful information is sent immediately after confirmation,
-            so you can prepare the exchange in advance.
+            Fill in the form below — name, phone, email, your situation and preferred contact method.
+            The office will respond promptly.
           </p>
         </div>
       </section>
@@ -64,19 +64,19 @@
       <section class="section grid grid-2" data-animate>
         <article class="card tilt-card">
           <span class="eyebrow">Before the consultation</span>
-          <h2>Booking conditions</h2>
+          <h2>How does it work?</h2>
           <ul>
-            <li>Format: online consultation or in-office meeting</li>
-            <li>Immediate slot confirmation after submission</li>
-            <li>Standard duration: 60 minutes</li>
-            <li>Prepare a concise summary and essential documents</li>
+            <li>Fill in the form — takes less than 2 minutes</li>
+            <li>The office contacts you via your preferred method (email or phone)</li>
+            <li>Standard consultation duration: 60 minutes</li>
+            <li>Full confidentiality from the first exchange</li>
           </ul>
         </article>
         <article class="card tilt-card">
-          <span class="eyebrow">Contact</span>
-          <h2>A question before booking?</h2>
+          <span class="eyebrow">Direct contact</span>
+          <h2>Urgent situation?</h2>
           <p>
-            For any prior enquiry or urgent situation, you can contact the office directly by email.
+            For urgent matters, you can contact the office directly by email.
           </p>
           <p class="note">cabinet@amartinez-avocat.fr</p>
         </article>
@@ -85,80 +85,68 @@
       <section class="section" data-animate>
         <div class="section-head">
           <div>
-            <span class="eyebrow">Booking module</span>
-            <h2>Book directly on the website</h2>
+            <span class="eyebrow">Contact form</span>
+            <h2>Send your request</h2>
           </div>
         </div>
-        <div class="booking-shell" data-booking-widget data-lang="en">
-          <article class="card booking-card-main">
-            <div class="booking-stepper" aria-hidden="true">
-              <span class="step-pill is-active">1. Details</span>
-              <span class="step-pill is-active">2. Slot</span>
-              <span class="step-pill">3. Calendar</span>
-            </div>
-            <h3>Choose your slot</h3>
-            <form class="booking-form" novalidate>
-              <label for="appointment_name_en">Full name</label>
-              <input id="appointment_name_en" name="appointment_name" type="text" autocomplete="name" required />
 
-              <label for="appointment_email_en">Email</label>
-              <input id="appointment_email_en" name="appointment_email" type="email" autocomplete="email" required />
-
-              <label for="appointment_phone_en">Phone number</label>
-              <input id="appointment_phone_en" name="appointment_phone" type="tel" autocomplete="tel" inputmode="tel" required />
-
-              <label for="appointment_date_en">Date</label>
-              <input id="appointment_date_en" name="appointment_date" type="date" required />
-
-              <label for="appointment_mode_en">Consultation format</label>
-              <select id="appointment_mode_en" name="appointment_mode" required>
-                <option value="" selected disabled>Select a format</option>
-                <option value="cabinet">In-office (Paris 5e)</option>
-                <option value="online">Online (video consultation)</option>
-              </select>
-
-              <label for="appointment_time_en">Available slot</label>
-              <div class="booking-slot-grid" data-slot-grid></div>
-              <input id="appointment_time_en" name="appointment_time" type="hidden" required />
-              <p class="note" data-selected-time>No time selected yet.</p>
-
-              <label for="appointment_message_en">Briefly describe your situation *</label>
-              <textarea id="appointment_message_en" name="appointment_message" required></textarea>
-
-              <button class="btn btn-primary magnetic" type="submit">Confirm booking</button>
-              <p class="note">Standard duration: 60 minutes. Full confidentiality guaranteed.</p>
+        <div class="contact-shell">
+          <article class="card contact-form-card" id="contact-form-panel-en">
+            <form class="contact-form" id="contact-form-en" novalidate data-lang="en">
+              <div class="contact-form-grid">
+                <div class="contact-field">
+                  <label for="cf_name_en">Full name <span aria-hidden="true">*</span></label>
+                  <input id="cf_name_en" name="name" type="text" autocomplete="name" placeholder="John Smith" required />
+                </div>
+                <div class="contact-field">
+                  <label for="cf_phone_en">Phone number <span aria-hidden="true">*</span></label>
+                  <input id="cf_phone_en" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+33 6 00 00 00 00" required />
+                </div>
+                <div class="contact-field contact-field--full">
+                  <label for="cf_email_en">Email address <span aria-hidden="true">*</span></label>
+                  <input id="cf_email_en" name="email" type="email" autocomplete="email" placeholder="john.smith@email.com" required />
+                </div>
+                <div class="contact-field contact-field--full">
+                  <label for="cf_message_en">Describe your situation <span aria-hidden="true">*</span></label>
+                  <textarea id="cf_message_en" name="message" rows="5" placeholder="Briefly outline your situation and main questions." required></textarea>
+                </div>
+                <div class="contact-field contact-field--full">
+                  <fieldset class="pref-group">
+                    <legend>Preferred contact method <span aria-hidden="true">*</span></legend>
+                    <div class="pref-options">
+                      <label class="pref-option">
+                        <input type="radio" name="preferred_contact" value="email" required />
+                        <span class="pref-box">
+                          <span class="pref-icon" aria-hidden="true">✉</span>
+                          <span>E-mail</span>
+                        </span>
+                      </label>
+                      <label class="pref-option">
+                        <input type="radio" name="preferred_contact" value="phone" />
+                        <span class="pref-box">
+                          <span class="pref-icon" aria-hidden="true">☎</span>
+                          <span>Phone</span>
+                        </span>
+                      </label>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="contact-form-footer">
+                <button class="btn btn-primary magnetic" type="submit">Send my request</button>
+                <p class="note">All fields are required. Full confidentiality guaranteed.</p>
+              </div>
             </form>
-
-            <div class="booking-preview">
-              <h4>Summary</h4>
-              <p class="booking-preview-line"><strong>Date:</strong> <span data-preview-date>To be selected</span></p>
-              <p class="booking-preview-line"><strong>Time:</strong> <span data-preview-time>To be selected</span></p>
-              <p class="booking-preview-line"><strong>Format:</strong> <span data-preview-mode>To be selected</span></p>
-            </div>
           </article>
 
-          <article class="card booking-result booking-success is-hidden" data-booking-result>
-            <div class="booking-success-head">
-              <span class="booking-check" aria-label="Confirmed">✓</span>
+          <article class="card contact-success is-hidden" id="contact-success-en" aria-live="polite">
+            <div class="contact-success-inner">
+              <span class="booking-check" aria-label="Sent">✓</span>
               <div>
-                <h3>Booking confirmed</h3>
-                <p class="booking-summary" data-booking-summary></p>
+                <h3>Request sent</h3>
+                <p>The office has received your message and will get back to you promptly via your preferred method.</p>
               </div>
             </div>
-            <ul class="booking-meta">
-              <li><strong>Name:</strong> <span data-result-name>-</span></li>
-              <li><strong>Phone:</strong> <span data-result-phone>-</span></li>
-              <li><strong>Date:</strong> <span data-result-date>-</span></li>
-              <li><strong>Time:</strong> <span data-result-time>-</span></li>
-              <li><strong>Format:</strong> <span data-result-mode>-</span></li>
-            </ul>
-            <p class="note">Add this appointment to your personal calendar:</p>
-            <div class="booking-calendar-grid">
-              <a class="calendar-card" data-link-google target="_blank" rel="noopener">Add to Google Calendar</a>
-              <a class="calendar-card" data-link-outlook target="_blank" rel="noopener">Add to Outlook Calendar</a>
-              <a class="calendar-card" data-link-apple>Add to Apple Calendar (.ics)</a>
-            </div>
-            <a class="cookie-link" data-link-ics>Download .ics file</a>
           </article>
         </div>
       </section>

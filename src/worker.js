@@ -370,7 +370,29 @@ async function handleAdminApplyRules(request, env) {
   });
 }
 
+async function handleContact(request, env) {
+  if (request.method !== "POST") return methodNotAllowed();
+  const body = await readJsonBody(request).catch(() => null);
+  if (!body) return jsonResponse(400, { error: "invalid_body" });
+
+  const { name, phone, email, message, preferred_contact } = body;
+  if (!name || !phone || !email || !message || !preferred_contact) {
+    return jsonResponse(400, { error: "missing_fields" });
+  }
+
+  if (env.SCHEDULE_STORE) {
+    const key = `contact:${Date.now()}:${Math.random().toString(36).slice(2, 7)}`;
+    await env.SCHEDULE_STORE.put(key, JSON.stringify({
+      name, phone, email, message, preferred_contact,
+      submittedAt: new Date().toISOString()
+    }), { expirationTtl: 60 * 60 * 24 * 180 });
+  }
+
+  return jsonResponse(200, { ok: true });
+}
+
 const API_ROUTES = {
+  "/api/contact": handleContact,
   "/api/schedule": handleSchedule,
   "/api/schedule/book": handleScheduleBook,
   "/api/admin/session": handleAdminSession,
