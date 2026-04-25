@@ -851,6 +851,18 @@ function setupBookingWidgets() {
   });
 }
 
+function setupHeaderScroll() {
+  const header = document.querySelector(".site-header");
+  if (!header) return;
+
+  const update = () => {
+    header.classList.toggle("is-scrolled", window.scrollY > 12);
+  };
+
+  update();
+  window.addEventListener("scroll", update, { passive: true });
+}
+
 function runSafeSetup(name, fn) {
   try {
     fn();
@@ -861,6 +873,7 @@ function runSafeSetup(name, fn) {
 
 window.addEventListener("DOMContentLoaded", () => {
   runSafeSetup("cookie", setupCookieBanner);
+  runSafeSetup("header", setupHeaderScroll);
   runSafeSetup("menu", setupMobileMenu);
   runSafeSetup("reveal", setupRevealAnimation);
   runSafeSetup("scroll", setupScrollProgress);
