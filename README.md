@@ -42,6 +42,11 @@ Optional environment vars:
 
 - `OUTLOOK_ICS_URL`
 - `ALLOW_INSECURE_ICS` (`0` or `1`)
+- `CONTACT_NOTIFICATION_TO` (defaults to `cabinet@amartinez-avocat.fr`)
+- `CONTACT_FROM_EMAIL` (defaults to `cabinet@amartinez-avocat.fr`)
+- `CONTACT_FROM_NAME` (defaults to `Cabinet Alexandre MARTINEZ`)
+- `RESEND_API_KEY` (optional, used if you want Resend instead of the MailChannels fallback)
+- `MAILCHANNELS_ENDPOINT` (optional, defaults to `https://api.mailchannels.net/tx/v1/send`)
 
 ## Deploy
 
@@ -51,6 +56,7 @@ npx wrangler pages deploy public --project-name alexandre-martinez-avocat
 
 ## API routes
 
+- `POST /api/contact`
 - `GET /api/schedule`
 - `POST /api/schedule/book`
 - `GET /api/admin/session`

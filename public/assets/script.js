@@ -895,10 +895,16 @@ function setupContactForms() {
   forms.forEach((form) => {
     const lang = form.getAttribute("data-lang") === "en" ? "en" : "fr";
     const submitBtn = form.querySelector("button[type='submit']");
+    const statusNode = form.querySelector("[data-contact-status]");
     const successId = lang === "en" ? "contact-success-en" : "contact-success-fr";
     const formPanelId = lang === "en" ? "contact-form-panel-en" : "contact-form-panel";
     const successPanel = document.getElementById(successId);
     const formPanel = document.getElementById(formPanelId);
+    const sendingLabel = lang === "en" ? "Sending..." : "Envoi en cours...";
+    const genericError =
+      lang === "en"
+        ? "Unable to send your request right now. Please try again in a moment."
+        : "Impossible d'envoyer votre demande pour le moment. Merci de reessayer dans un instant.";
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -906,19 +912,50 @@ function setupContactForms() {
 
       const data = Object.fromEntries(new FormData(form));
       const originalLabel = submitBtn ? submitBtn.textContent : "";
+      if (statusNode) {
+        statusNode.textContent = "";
+        statusNode.classList.remove("is-error");
+      }
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = lang === "en" ? "Sending…" : "Envoi en cours…";
+        submitBtn.textContent = sendingLabel;
       }
 
       try {
-        await fetch("/api/contact", {
+        const response = await fetch("/api/contact", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          body: JSON.stringify(data)
         });
+
+        if (!response.ok) {
+          let message = genericError;
+          try {
+            const payload = await response.json();
+            if (payload && payload.message) {
+              message = String(payload.message);
+            }
+          } catch (_) {
+            // Keep localized fallback message.
+          }
+
+          if (statusNode) {
+            statusNode.textContent = message;
+            statusNode.classList.add("is-error");
+          }
+          return;
+        }
       } catch (_) {
-        /* show success regardless — request is logged server-side */
+        if (statusNode) {
+          statusNode.textContent = genericError;
+          statusNode.classList.add("is-error");
+        }
+        return;
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+        }
       }
 
       if (formPanel) formPanel.classList.add("is-hidden");

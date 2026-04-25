@@ -18,6 +18,11 @@ import {
   applyRulesToDays
 } from "./lib/schedule-store.js";
 import { syncOutlookWithSchedule } from "./lib/outlook-sync.js";
+import {
+  normalizeContactPayload,
+  isContactPayloadValid,
+  sendContactNotification
+} from "./lib/contact-notify.js";
 
 const REDIRECTS = new Map([
   ["/honoraires", "/methode"],
@@ -375,20 +380,53 @@ async function handleContact(request, env) {
   const body = await readJsonBody(request).catch(() => null);
   if (!body) return jsonResponse(400, { error: "invalid_body" });
 
-  const { name, phone, email, message, preferred_contact } = body;
-  if (!name || !phone || !email || !message || !preferred_contact) {
+  const payload = normalizeContactPayload(body);
+  if (!isContactPayloadValid(payload)) {
     return jsonResponse(400, { error: "missing_fields" });
+  }
+
+  let notification = null;
+  try {
+    notification = await sendContactNotification(env, payload);
+  } catch (error) {
+    if (env.SCHEDULE_STORE) {
+      const failedKey = `contact:${Date.now()}:${Math.random().toString(36).slice(2, 7)}`;
+      await env.SCHEDULE_STORE.put(
+        failedKey,
+        JSON.stringify({
+          ...payload,
+          submittedAt: new Date().toISOString(),
+          notificationStatus: "failed",
+          notificationError: error instanceof Error ? error.message : "unknown_error"
+        }),
+        { expirationTtl: 60 * 60 * 24 * 180 }
+      );
+    }
+
+    return jsonResponse(502, {
+      error: "notification_failed",
+      message: "Unable to send contact notification."
+    });
   }
 
   if (env.SCHEDULE_STORE) {
     const key = `contact:${Date.now()}:${Math.random().toString(36).slice(2, 7)}`;
-    await env.SCHEDULE_STORE.put(key, JSON.stringify({
-      name, phone, email, message, preferred_contact,
-      submittedAt: new Date().toISOString()
-    }), { expirationTtl: 60 * 60 * 24 * 180 });
+    await env.SCHEDULE_STORE.put(
+      key,
+      JSON.stringify({
+        ...payload,
+        submittedAt: notification ? notification.submittedAt : new Date().toISOString(),
+        notificationStatus: "sent",
+        notificationProvider: notification ? notification.provider : ""
+      }),
+      { expirationTtl: 60 * 60 * 24 * 180 }
+    );
   }
 
-  return jsonResponse(200, { ok: true });
+  return jsonResponse(200, {
+    ok: true,
+    notificationProvider: notification ? notification.provider : ""
+  });
 }
 
 const API_ROUTES = {

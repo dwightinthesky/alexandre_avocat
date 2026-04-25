@@ -768,6 +768,12 @@ textarea:focus { border-color: var(--accent); outline: none }
 }
 .contact-form-footer .btn { flex-shrink: 0 }
 .contact-form-footer .note { margin: 0 }
+.contact-form-status {
+  margin: 0;
+  color: var(--quiet);
+  font-size: .82rem;
+}
+.contact-form-status.is-error { color: var(--err) }
 
 .contact-success { padding: 2rem 1.8rem }
 .contact-success-inner {
