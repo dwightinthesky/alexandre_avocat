@@ -123,9 +123,48 @@ function buildMailConfig(env) {
     to: normalizeValue(env.CONTACT_NOTIFICATION_TO) || DEFAULT_NOTIFICATION_TO,
     fromEmail: normalizeValue(env.CONTACT_FROM_EMAIL) || DEFAULT_FROM_EMAIL,
     fromName: normalizeValue(env.CONTACT_FROM_NAME) || DEFAULT_FROM_NAME,
+    emailBinding:
+      env.CONTACT_EMAIL && typeof env.CONTACT_EMAIL.send === "function" ? env.CONTACT_EMAIL : null,
     resendApiKey: normalizeValue(env.RESEND_API_KEY),
+    mailchannelsApiKey: normalizeValue(env.MAILCHANNELS_API_KEY),
     mailchannelsEndpoint: normalizeValue(env.MAILCHANNELS_ENDPOINT) || DEFAULT_MAILCHANNELS_ENDPOINT
   };
+}
+
+function buildProviderError(code, message, cause) {
+  const error = new Error(message);
+  error.code = code;
+  if (cause) {
+    error.cause = cause;
+  }
+  return error;
+}
+
+async function sendViaCloudflareBinding(config, message, payload) {
+  if (!config.emailBinding) {
+    throw buildProviderError("cloudflare_binding_missing", "Cloudflare email binding missing.");
+  }
+
+  try {
+    await config.emailBinding.send({
+      to: config.to,
+      from: {
+        email: config.fromEmail,
+        name: config.fromName
+      },
+      replyTo: {
+        email: payload.email,
+        name: payload.name
+      },
+      subject: message.subject,
+      text: message.text,
+      html: message.html
+    });
+  } catch (cause) {
+    throw buildProviderError("cloudflare_send_failed", "Cloudflare email send failed.", cause);
+  }
+
+  return "cloudflare";
 }
 
 async function sendViaResend(config, message, replyTo) {
@@ -147,17 +186,22 @@ async function sendViaResend(config, message, replyTo) {
 
   if (!response.ok) {
     const details = await response.text();
-    throw new Error(`resend_failed:${response.status}:${details}`);
+    throw buildProviderError("resend_failed", `Resend send failed with status ${response.status}.`, details);
   }
 
   return "resend";
 }
 
 async function sendViaMailChannels(config, message, payload) {
+  if (!config.mailchannelsApiKey) {
+    throw buildProviderError("mailchannels_key_missing", "MailChannels API key missing.");
+  }
+
   const response = await fetch(config.mailchannelsEndpoint, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "X-Api-Key": config.mailchannelsApiKey
     },
     body: JSON.stringify({
       personalizations: [
@@ -189,7 +233,14 @@ async function sendViaMailChannels(config, message, payload) {
 
   if (!response.ok) {
     const details = await response.text();
-    throw new Error(`mailchannels_failed:${response.status}:${details}`);
+    if (response.status === 401 || response.status === 403) {
+      throw buildProviderError(
+        "mailchannels_auth_failed",
+        `MailChannels authentication failed with status ${response.status}.`,
+        details
+      );
+    }
+    throw buildProviderError("mailchannels_failed", `MailChannels send failed with status ${response.status}.`, details);
   }
 
   return "mailchannels";
@@ -200,9 +251,21 @@ export async function sendContactNotification(env, payload) {
   const submittedAt = new Date();
   const message = buildNotificationContent(payload, submittedAt);
 
+  if (config.emailBinding) {
+    const provider = await sendViaCloudflareBinding(config, message, payload);
+    return { provider, submittedAt: submittedAt.toISOString() };
+  }
+
   if (config.resendApiKey) {
     const provider = await sendViaResend(config, message, payload.email);
     return { provider, submittedAt: submittedAt.toISOString() };
+  }
+
+  if (!config.mailchannelsApiKey) {
+    throw buildProviderError(
+      "email_provider_not_configured",
+      "No email provider configured. Set CONTACT_EMAIL, RESEND_API_KEY, or MAILCHANNELS_API_KEY."
+    );
   }
 
   const provider = await sendViaMailChannels(config, message, payload);

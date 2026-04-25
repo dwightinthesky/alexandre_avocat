@@ -35,6 +35,43 @@ function methodNotAllowed() {
   return jsonResponse(405, { error: "method_not_allowed" });
 }
 
+function getContactErrorResponse(error) {
+  const code = error && typeof error === "object" ? error.code : "";
+
+  if (code === "email_provider_not_configured") {
+    return jsonResponse(500, {
+      error: code,
+      message: "Email provider not configured. Add CONTACT_EMAIL, RESEND_API_KEY, or MAILCHANNELS_API_KEY."
+    });
+  }
+
+  if (code === "mailchannels_auth_failed") {
+    return jsonResponse(502, {
+      error: code,
+      message: "MailChannels authentication failed. Set MAILCHANNELS_API_KEY or switch to another provider."
+    });
+  }
+
+  if (code === "resend_failed") {
+    return jsonResponse(502, {
+      error: code,
+      message: "Resend rejected the email. Check RESEND_API_KEY and sender domain verification."
+    });
+  }
+
+  if (code === "cloudflare_send_failed") {
+    return jsonResponse(502, {
+      error: code,
+      message: "Cloudflare email sending failed. Check the CONTACT_EMAIL binding and verified sender address."
+    });
+  }
+
+  return jsonResponse(502, {
+    error: "notification_failed",
+    message: "Unable to send contact notification."
+  });
+}
+
 function isSecureRequest(request) {
   const url = new URL(request.url);
   if (url.protocol === "https:") return true;
@@ -403,10 +440,7 @@ async function handleContact(request, env) {
       );
     }
 
-    return jsonResponse(502, {
-      error: "notification_failed",
-      message: "Unable to send contact notification."
-    });
+    return getContactErrorResponse(error);
   }
 
   if (env.SCHEDULE_STORE) {

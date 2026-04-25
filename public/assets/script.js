@@ -905,6 +905,28 @@ function setupContactForms() {
       lang === "en"
         ? "Unable to send your request right now. Please try again in a moment."
         : "Impossible d'envoyer votre demande pour le moment. Merci de reessayer dans un instant.";
+    const contactErrors =
+      lang === "en"
+        ? {
+            email_provider_not_configured:
+              "Email sending is not configured yet. Add CONTACT_EMAIL, RESEND_API_KEY, or MAILCHANNELS_API_KEY.",
+            mailchannels_auth_failed:
+              "MailChannels authentication failed. Add MAILCHANNELS_API_KEY or switch to another provider.",
+            resend_failed:
+              "Resend rejected the email. Check RESEND_API_KEY and sender domain verification.",
+            cloudflare_send_failed:
+              "Cloudflare email sending failed. Check the CONTACT_EMAIL binding and verified sender address."
+          }
+        : {
+            email_provider_not_configured:
+              "L'envoi d'e-mail n'est pas encore configure. Ajoutez CONTACT_EMAIL, RESEND_API_KEY ou MAILCHANNELS_API_KEY.",
+            mailchannels_auth_failed:
+              "L'authentification MailChannels a echoue. Ajoutez MAILCHANNELS_API_KEY ou utilisez un autre provider.",
+            resend_failed:
+              "Resend a refuse l'envoi. Verifiez RESEND_API_KEY et la verification du domaine expediteur.",
+            cloudflare_send_failed:
+              "L'envoi d'e-mail Cloudflare a echoue. Verifiez le binding CONTACT_EMAIL et l'adresse expediteur verifiee."
+          };
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -932,7 +954,9 @@ function setupContactForms() {
           let message = genericError;
           try {
             const payload = await response.json();
-            if (payload && payload.message) {
+            if (payload && payload.error && contactErrors[payload.error]) {
+              message = contactErrors[payload.error];
+            } else if (payload && payload.message) {
               message = String(payload.message);
             }
           } catch (_) {

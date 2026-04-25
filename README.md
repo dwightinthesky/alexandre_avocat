@@ -45,8 +45,19 @@ Optional environment vars:
 - `CONTACT_NOTIFICATION_TO` (defaults to `cabinet@amartinez-avocat.fr`)
 - `CONTACT_FROM_EMAIL` (defaults to `cabinet@amartinez-avocat.fr`)
 - `CONTACT_FROM_NAME` (defaults to `Cabinet Alexandre MARTINEZ`)
-- `RESEND_API_KEY` (optional, used if you want Resend instead of the MailChannels fallback)
+- `RESEND_API_KEY` (optional, used if you want Resend)
+- `MAILCHANNELS_API_KEY` (optional, used if you want authenticated MailChannels delivery)
 - `MAILCHANNELS_ENDPOINT` (optional, defaults to `https://api.mailchannels.net/tx/v1/send`)
+
+## Contact email providers
+
+`POST /api/contact` now supports three provider paths, in this order:
+
+1. Cloudflare `send_email` binding on `CONTACT_EMAIL`
+2. `RESEND_API_KEY`
+3. `MAILCHANNELS_API_KEY`
+
+If none of these are configured, contact submissions will fail with an explicit configuration error.
 
 ## Deploy
 
