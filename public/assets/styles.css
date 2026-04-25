@@ -278,6 +278,7 @@ p:last-child { margin-bottom: 0 }
 .hero { position: relative; overflow: hidden }
 .hero-copy { max-width: 62ch }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 2rem }
+.keep-together { white-space: nowrap }
 
 /* ═══ METRICS ═══ */
 
@@ -1216,6 +1217,7 @@ textarea:focus { border-color: var(--accent); outline: none }
   .pref-options { flex-wrap: wrap }
   .page-main { padding-bottom: 5rem }
   h1 { line-height: 1.06 }
+  .keep-together { white-space: normal }
   .zen-hero-title {
     max-width: 100%; font-size: clamp(2rem, 9.5vw, 3.4rem);
   }
