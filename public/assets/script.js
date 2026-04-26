@@ -1,32 +1,13 @@
-const consentKey = "aa_cookie_consent";
-
 document.documentElement.classList.add("js");
 
 function setupCookieBanner() {
   const banner = document.getElementById("cookie-banner");
   if (!banner) return;
 
-  let storedConsent = null;
-  try {
-    storedConsent = localStorage.getItem(consentKey);
-  } catch (error) {
-    storedConsent = null;
-  }
-
-  if (!storedConsent) {
-    banner.hidden = false;
-  }
+  banner.hidden = false;
 
   banner.querySelectorAll("[data-cookie-choice]").forEach((button) => {
     button.addEventListener("click", () => {
-      const choice = button.getAttribute("data-cookie-choice");
-      if (choice === "accept" || choice === "reject") {
-        try {
-          localStorage.setItem(consentKey, choice);
-        } catch (error) {
-          // Ignore storage failures in restricted/private contexts.
-        }
-      }
       banner.hidden = true;
     });
   });

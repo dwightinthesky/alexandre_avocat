@@ -59,6 +59,26 @@ Optional environment vars:
 
 If none of these are configured, contact submissions will fail with an explicit configuration error.
 
+### Cloudflare Email Service setup
+
+To make `POST /api/contact` send real emails through Cloudflare Email Service:
+
+1. Your sending domain must be on Cloudflare DNS.
+2. In the Cloudflare dashboard, go to `Compute > Email Service > Email Sending`.
+3. Onboard the domain you want to send from, then let Cloudflare add the required DNS records.
+4. Make sure the sender address used by the site belongs to that onboarded domain.
+   - Current default sender: `cabinet@amartinez-avocat.fr`
+5. Add a `CONTACT_EMAIL` email binding to the Pages project in Cloudflare so it is available to Pages Functions at runtime.
+
+If you need to override the sender identity, set:
+
+- `CONTACT_FROM_EMAIL`
+- `CONTACT_FROM_NAME`
+
+The notification recipient is controlled by:
+
+- `CONTACT_NOTIFICATION_TO` (defaults to `cabinet@amartinez-avocat.fr`)
+
 ## Deploy
 
 ```bash
